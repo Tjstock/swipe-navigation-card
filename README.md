@@ -1,7 +1,7 @@
 # xbox-swipe-navigation-card
 This card imitates the Xbox app's swipe gesture remote by integrating the basic buttons and swipe gestures to control the navigation using touch or mouse events.
 
-Currently this card is not very customizable or universal but if requested I can work on improving it.
+Currently this card is not very customizable or universal but if requested I can work on improving it to be so. (custom buttons, icons, styles, etc.)
 
 ![Card Example](card-example.png)
 ## Features
