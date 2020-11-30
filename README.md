@@ -4,6 +4,12 @@ This card imitates the Xbox app's swipe gesture remote by integrating the basic 
 Currently this card is not very customizable or universal but if requested I can work on improving it.
 
 ![Card Example](card-example.png)
+## Features
+- Starting a swipe anywhere on the card (that is not a button) will trigger a left, right, up or down swipe based on the direciton you swiped. Eg. Swiping from right to left triggers the left action.
+- Clicking anywhere on the card (that is not a button) will trigger the `touchpad` action which I use as the 'A', 'OK', or 'Select' button.
+- Buttons for 'X', 'Y', 'B', 'View', 'Xbox', 'Menu', 'Rewind', 'Play/Pause', 'Fast Forward', 'Volume Up', 'Volume Down', 'Volume Mute'
+- Ability to repeat actions on hold for the Volume Up and Volume Down buttons. Currently configured to repeat every 250ms. Will add config property if requested.
+
 
 ## Installation
 
@@ -27,14 +33,14 @@ Currently this card is not very customizable or universal but if requested I can
 | `type`                | string          | **Required** | `custom:xbox-swipe-navigation-card`                    | Type of the card |
 | `swipe_actions`       | object          | **Required** |  See Example           | Object to define the actions for left, right, up and down swipe gestures |
 | `button_actions`      | object          | **Required** | See Example       | Object to define the actions for `touchpad` (select, A, OK) and all other buttons  |
-| `hold_repeat_enabled`| boolean| false | `true` \| `false` | Defines if the hold action should be enabled. Only available for the volume_up and volume_down buttons|
-| `service`| string| **Required** | Any service | Service to call (e.g. remote.send_command, media_player.volume_up, etc.)|
-| `data`| object| **Required** | Any service data | Service data to include (e.g. entity_id: media_player.receiver)|
+| `hold_repeat_enabled`| boolean| false | `true` \| `false` | Defines if the hold action should be enabled. Only available for the `volume_up` and `volume_down` buttons|
+| `service`| string| **Required** | Any service | Service to call (e.g. `remote.send_command`, `media_player.volume_up`, etc.)|
+| `data`| object| **Required** | Any service data | Service data to include (e.g. `entity_id: media_player.receiver`)|
 
 ### Example
 Although no config validations exist, currently all `swipe_actions` and `button_actions` configurations are required but may become optional in the future.
 
-NOTE: Using the new [Xbox Integration](https://www.home-assistant.io/integrations/xbox/) will work perfect. I was using a harmony hub before the integration came out.
+NOTE: Using the new built in [Xbox Integration](https://www.home-assistant.io/integrations/xbox/) should work just fine. I was just using a harmony hub before the integration came out.
 
 ```yaml
 type: 'custom:xbox-swipe-navigation-card'
