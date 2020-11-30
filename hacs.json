@@ -1,5 +1,6 @@
 {
   "name": "Xbox Swipe Navigation Card",
   "content_in_root": true,
+  "render_readme": true,
   "filename": "xbox-swipe-navigation-card.js"
 }
