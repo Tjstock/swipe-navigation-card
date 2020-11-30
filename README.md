@@ -36,7 +36,7 @@ Although no config validations exist, currently all `swipe_actions` and `button_
 
 NOTE: Using the new [Xbox Integration](https://www.home-assistant.io/integrations/xbox/) will work perfect. I was using a harmony hub before the integration came out.
 
-```
+```yaml
 type: 'custom:xbox-swipe-navigation-card'
 swipe_actions:
   left: 
