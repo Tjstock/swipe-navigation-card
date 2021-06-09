@@ -1,12 +1,15 @@
 # xbox-swipe-navigation-card
-This card imitates the Xbox app's swipe gesture remote by integrating the basic buttons and swipe gestures to control the navigation using touch or mouse events.
-
-Currently this card is not very customizable or universal but if requested I can work on improving it to be so. (custom buttons, icons, styles, etc.)
+A card that allows you to control your xbox by using swipe gestures and buttons. This card is similar to the Xbox app's remote control.
 
 ![Card Example](card-example.png)
 ## Features
-- Starting a swipe anywhere on the card (that is not a button) will trigger a left, right, up or down swipe based on the direciton you swiped. Eg. Swiping from right to left triggers the left action.
-- Clicking anywhere on the card (that is not a button) will trigger the `touchpad` action which I use as the 'A', 'OK', or 'Select' button.
+Please let me know of any new features that you would like to have! For example the ability to add Custom buttons, icons, styles, keyboard support etc.
+- Swiping anywhere on the center of the card will trigger a left, right, up, or down action based on the direciton you swiped.
+   - Swiping from right to left triggers the left action.
+   - Swiping from left to right triggers the right action.
+   - Swiping from top to bottom triggers the down action.
+   - Swiping from bottom to top triggers the up action.
+- Clicking anywhere on the center of the card will trigger the `touchpad` action which I use as the 'A', 'OK', or 'Select' button.
 - Buttons for 'X', 'Y', 'B', 'View', 'Xbox', 'Menu', 'Rewind', 'Play/Pause', 'Fast Forward', 'Volume Up', 'Volume Down', 'Volume Mute'
 - Ability to repeat actions on hold for the Volume Up and Volume Down buttons. Currently configured to repeat every 250ms. Will add config property if requested.
 
@@ -38,9 +41,9 @@ Currently this card is not very customizable or universal but if requested I can
 | `data`| object| **Required** | Any service data | Service data to include (e.g. `entity_id: media_player.receiver`)|
 
 ### Example
-Although no config validations exist, currently all `swipe_actions` and `button_actions` configurations are required but may become optional in the future.
+Currently all `swipe_actions` and `button_actions` configurations are required but may become optional in the future.
 
-NOTE: Using the new built in [Xbox Integration](https://www.home-assistant.io/integrations/xbox/) should work just fine. I was just using a harmony hub before the integration came out.
+NOTE: Using home assistants [Xbox Integration](https://www.home-assistant.io/integrations/xbox/) will also work! I was just using my harmony hub prior to integration's release.
 
 ```yaml
 type: 'custom:xbox-swipe-navigation-card'
