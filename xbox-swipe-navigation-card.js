@@ -113,26 +113,28 @@ class NavigationCard extends HTMLElement {
 
         const style = document.createElement('style');
         style.textContent = `
-                .nc-touchpad { width: 100%; height: 300px; position: relative; display: flex; align-items: center; justify-content: center;}
-                .nc-button { width: 55px; height: 55px; --mdc-icon-button-size: auto; --mdc-icon-size: auto; position: absolute; }
-                .nc-vertical-button-container { width: 55px; height: 85%;  position: absolute; display: flex; align-items: center; justify-content: center; }
-                .nc-horizontal-button-container { width: 40%; height: 55px; position: absolute; display: flex; align-items: center; justify-content: center; }
+                xbox-swipe-navigation-card {height:100%}
+                ha-card {height: 100%; min-height: 450px}
+                .nc-touchpad { width: 100%; height: 100%; min-height: 450px; position: relative; display: flex; align-items: center; justify-content: center;}
+                .nc-button { width: 65px; height: 65px; --mdc-icon-button-size: auto; --mdc-icon-size: auto; position: absolute; }
+                .nc-vertical-button-container { width: 65px; height: 75%;  position: absolute; display: flex; align-items: center; justify-content: center; }
+                .nc-horizontal-button-container { width: 55%; height: 65px; position: absolute; display: flex; align-items: center; justify-content: center; }
                 #left-container {left: 0; }
                 #right-container {right: 0;}
                 #top-container {top: 0; }
                 #bottom-container {bottom: 0; }
-                #b-button { color: #d04242; top: 0 }
-                #y-button { color: #ecdb33; }
-                #x-button { color: #40ccd0; bottom: 0; }
+                #lc_button_top { top: 0 }
+                #lc_button_middle { color: #E50914; }
+                #lc_button_bottom { color: #66aa33; bottom: 0; }
                 #volumeup-button {top: 0 }
                 #volumemute-button { color: red;}
                 #volumedown-button { bottom: 0; }
-                #view-button { left: 0; width: 35px; height: 35px; }
-                #xbox-button { }
-                #menu-button { right: 0; width: 35px; height: 35px; }
-                #rewind-button { left: 0; }
+                #tc_button_left { left: 0; width: 40px; height: 40px; }
+                #tc_button_middle { }
+                #tc_button_right { right: 0; width: 40px; height: 40px; }
+                #rewind-button { left: 0; color: #BABABA; }
                 #playpause-button { }
-                #fastforward-button { right: 0; }
+                #fastforward-button { right: 0; color: #BABABA; }
             `;
         this.appendChild(style);  
 
@@ -146,30 +148,30 @@ class NavigationCard extends HTMLElement {
         let left_container = document.createElement('div');
             left_container.id = 'left-container'
             left_container.className = 'nc-vertical-button-container'
-        let b_button = document.createElement('ha-icon-button');
-            b_button.className = 'nc-button';
-            b_button.id = 'b-button';
-            b_button.service = this.config.button_actions.b.service;
-            b_button.service_data = this.config.button_actions.b.data;
-            b_button.setAttribute('icon', 'mdi:alpha-b-circle');
-            buttons.push(b_button);
-        let x_button = document.createElement('ha-icon-button');
-            x_button.className = 'nc-button';
-            x_button.id = 'x-button';
-            x_button.service = this.config.button_actions.x.service;
-            x_button.service_data = this.config.button_actions.x.data;
-            x_button.setAttribute('icon', 'mdi:alpha-x-circle');
-            buttons.push(x_button);
-        let y_button = document.createElement('ha-icon-button');
-            y_button.className = 'nc-button';
-            y_button.id = 'y-button';
-            y_button.service = this.config.button_actions.y.service;
-            y_button.service_data = this.config.button_actions.y.data;
-            y_button.setAttribute('icon', 'mdi:alpha-y-circle');
-            buttons.push(y_button);
-        left_container.appendChild(b_button);
-        left_container.appendChild(y_button);
-        left_container.appendChild(x_button);
+        let lc_button_top = document.createElement('ha-icon-button');
+            lc_button_top.className = 'nc-button';
+            lc_button_top.id = 'lc_button_top';
+            lc_button_top.service = this.config.button_actions.b.service;
+            lc_button_top.service_data = this.config.button_actions.b.data;
+            lc_button_top.innerHTML = '<ha-icon icon="mdi:arrow-left"></ha-icon>';            
+            buttons.push(lc_button_top);
+        let lc_button_middle = document.createElement('ha-icon-button');
+            lc_button_middle.className = 'nc-button';
+            lc_button_middle.id = 'lc_button_middle';
+            lc_button_middle.service = this.config.button_actions.x.service;
+            lc_button_middle.service_data = this.config.button_actions.x.data;
+            lc_button_middle.innerHTML = '<ha-icon icon="mdi:netflix"></ha-icon>';   
+            buttons.push(lc_button_middle);
+        let lc_button_bottom = document.createElement('ha-icon-button');
+            lc_button_bottom.className = 'nc-button';
+            lc_button_bottom.id = 'lc_button_bottom';
+            lc_button_bottom.service = this.config.button_actions.y.service;
+            lc_button_bottom.service_data = this.config.button_actions.y.data;
+            lc_button_bottom.innerHTML = '<ha-icon icon="mdi:hulu"></ha-icon>'; 
+            buttons.push(lc_button_bottom);
+        left_container.appendChild(lc_button_top);
+        left_container.appendChild(lc_button_middle);
+        left_container.appendChild(lc_button_bottom);
         touchpad.appendChild(left_container);
 
         //Right Button Container
@@ -182,14 +184,14 @@ class NavigationCard extends HTMLElement {
             volumeup_button.service = this.config.button_actions.volume_up.service;
             volumeup_button.service_data = this.config.button_actions.volume_up.data;
             volumeup_button.hold_repeat_enabled = this.config.button_actions.volume_up.hold_repeat_enabled | false;
-            volumeup_button.setAttribute('icon', 'mdi:volume-plus');
+            volumeup_button.innerHTML = '<ha-icon icon="mdi:volume-plus"></ha-icon>'; 
             buttons.push(volumeup_button);
         let volumemute_button = document.createElement('ha-icon-button');
             volumemute_button.className = 'nc-button';
             volumemute_button.id = 'volumemute-button';
             volumemute_button.service = this.config.button_actions.volume_mute.service;
             volumemute_button.service_data = this.config.button_actions.volume_mute.data;
-            volumemute_button.setAttribute('icon', 'mdi:volume-mute');
+            volumemute_button.innerHTML = '<ha-icon icon="mdi:volume-mute"></ha-icon>'; 
             buttons.push(volumemute_button);
         let volumedown_button = document.createElement('ha-icon-button');
             volumedown_button.className = 'nc-button';
@@ -197,7 +199,7 @@ class NavigationCard extends HTMLElement {
             volumedown_button.service = this.config.button_actions.volume_down.service;
             volumedown_button.service_data = this.config.button_actions.volume_down.data;
             volumedown_button.hold_repeat_enabled = this.config.button_actions.volume_down.hold_repeat_enabled | false;
-            volumedown_button.setAttribute('icon', 'mdi:volume-minus');
+            volumedown_button.innerHTML = '<ha-icon icon="mdi:volume-minus"></ha-icon>'; 
             buttons.push(volumedown_button);
         right_container.appendChild(volumedown_button);
         right_container.appendChild(volumeup_button);
@@ -208,30 +210,30 @@ class NavigationCard extends HTMLElement {
         let top_container = document.createElement('div');
             top_container.id = 'top-container'
             top_container.className = 'nc-horizontal-button-container'
-        let view_button = document.createElement('ha-icon-button');
-            view_button.className = 'nc-button';
-            view_button.id = 'view-button';
-            view_button.service = this.config.button_actions.view.service;
-            view_button.service_data = this.config.button_actions.view.data;
-            view_button.setAttribute('icon', 'mdi:content-copy');
-            buttons.push(view_button);
-        let xbox_button = document.createElement('ha-icon-button');
-            xbox_button.className = 'nc-button';
-            xbox_button.id = 'xbox-button';
-            xbox_button.service = this.config.button_actions.xbox.service;
-            xbox_button.service_data = this.config.button_actions.xbox.data;
-            xbox_button.setAttribute('icon', 'mdi:microsoft-xbox');
-            buttons.push(xbox_button);
-        let menu_button = document.createElement('ha-icon-button');
-            menu_button.className = 'nc-button';
-            menu_button.id = 'menu-button';
-            menu_button.service = this.config.button_actions.menu.service;
-            menu_button.service_data = this.config.button_actions.menu.data;
-            menu_button.setAttribute('icon', 'mdi:menu');
-            buttons.push(menu_button);
-        top_container.appendChild(view_button);
-        top_container.appendChild(xbox_button);
-        top_container.appendChild(menu_button);
+        let tc_button_left = document.createElement('ha-icon-button');
+            tc_button_left.className = 'nc-button';
+            tc_button_left.id = 'tc_button_left';
+            tc_button_left.service = this.config.button_actions.view.service;
+            tc_button_left.service_data = this.config.button_actions.view.data;
+            tc_button_left.innerHTML = '<ha-icon icon="mdi:menu"></ha-icon>'; 
+            buttons.push(tc_button_left);
+        let tc_button_middle = document.createElement('ha-icon-button');
+            tc_button_middle.className = 'nc-button';
+            tc_button_middle.id = 'tc_button_middlen';
+            tc_button_middle.service = this.config.button_actions.xbox.service;
+            tc_button_middle.service_data = this.config.button_actions.xbox.data;
+            tc_button_middle.innerHTML = '<ha-icon icon="mdi:power"></ha-icon>'; 
+            buttons.push(tc_button_middle);
+        let tc_button_right = document.createElement('ha-icon-button');
+            tc_button_right.className = 'nc-button';
+            tc_button_right.id = 'tc_button_right';
+            tc_button_right.service = this.config.button_actions.menu.service;
+            tc_button_right.service_data = this.config.button_actions.menu.data;
+            tc_button_right.innerHTML = '<ha-icon icon="mdi:apps"></ha-icon>'; 
+            buttons.push(tc_button_right);
+        top_container.appendChild(tc_button_left);
+        top_container.appendChild(tc_button_middle);
+        top_container.appendChild(tc_button_right);
         touchpad.appendChild(top_container);
         
         //Bottom Button Container
@@ -243,21 +245,21 @@ class NavigationCard extends HTMLElement {
             rewind_button.id = 'rewind-button';
             rewind_button.service = this.config.button_actions.rewind.service;
             rewind_button.service_data = this.config.button_actions.rewind.data;
-            rewind_button.setAttribute('icon', 'mdi:rewind');
+            rewind_button.innerHTML = '<ha-icon icon="mdi:rewind"></ha-icon>'; 
             buttons.push(rewind_button);
         let playpause_button = document.createElement('ha-icon-button');
             playpause_button.className = 'nc-button';
             playpause_button.id = 'playpause-button';
             playpause_button.service = this.config.button_actions.play_pause.service;
             playpause_button.service_data = this.config.button_actions.play_pause.data;
-            playpause_button.setAttribute('icon', 'mdi:play-pause');
+            playpause_button.innerHTML = '<ha-icon icon="mdi:play-pause"></ha-icon>'; 
             buttons.push(playpause_button);
         let fastforward_button = document.createElement('ha-icon-button');
             fastforward_button.className = 'nc-button';
             fastforward_button.id = 'fastforward-button';
             fastforward_button.service = this.config.button_actions.fast_forward.service;
             fastforward_button.service_data = this.config.button_actions.fast_forward.data;
-            fastforward_button.setAttribute('icon', 'mdi:fast-forward');
+            fastforward_button.innerHTML = '<ha-icon icon="mdi:fast-forward"></ha-icon>'; 
             buttons.push(fastforward_button);
         bottom_container.appendChild(rewind_button);
         bottom_container.appendChild(playpause_button);
@@ -275,6 +277,22 @@ class NavigationCard extends HTMLElement {
     }
 
     setConfig(config) {
+        if (!config.swipe_actions.left) {
+            throw new Error('You need to define swipe_actions.left');
+        }
+        if (!config.swipe_actions.right) {
+            throw new Error('You need to define swipe_actions.right');
+        }
+        if (!config.swipe_actions.up) {
+            throw new Error('You need to define swipe_actions.up');
+        }
+        if (!config.swipe_actions.down) {
+            throw new Error('You need to define swipe_actions.down');
+        }
+        if (!config.swipe_actions.down) {
+            throw new Error('You need to define swipe_actions.down');
+        }
+
         this.config = config;
     }
 
@@ -282,7 +300,7 @@ class NavigationCard extends HTMLElement {
     // distribute all cards over the available columns. A height of 1 is 
     // equivalent to 50 pixels.
     getCardSize() {
-        return 6;
+        return 9;
     }
 }
 
