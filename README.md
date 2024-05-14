@@ -73,61 +73,73 @@ tap_action:
     entity_id: media_player.living_room_tv
     button: ENTER
 top_button_left:
+  icon: mdi:menu
   service: webostv.button
   data:
     entity_id: media_player.living_room_tv
     button: MENU
 top_button_middle:
+  icon: mdi:power
   service: media_player.toggle
   data:
     entity_id: media_player.living_room_tv
 top_button_right:
+  icon: mdi:apps
   service: androidtv.adb_command
   data:
     entity_id: media_player.android_tv
     command: HOME
 bottom_button_left:
+  icon: mdi:rewind
   service: androidtv.adb_command
   data:
     entity_id: media_player.android_tv
     command: REWIND
 bottom_button_middle:
+  icon: mdi:play-pause
   service: media_player.media_play_pause
   data:
     entity_id: media_player.living_room_tv
 bottom_button_right:
+  icon: mdi:fast-forward
   service: androidtv.adb_command
   data:
     entity_id: media_player.android_tv
     command: FAST_FORWARD
 left_button_top:
+  icon: mdi:arrow-left
   service: webostv.button
   data:
     entity_id: media_player.living_room_tv
     button: BACK
 left_button_middle:
+  icon: mdi:netflix
   service: media_player.select_source
   data:
     source: Netflix
     entity_id: media_player.android_tv
 left_button_bottom:
+  icon: mdi:hulu
   service: media_player.select_source
   data:
     source: Hulu
     entity_id: media_player.android_tv
 right_button_top:
+  icon: mdi:volume-plus
   service: media_player.volume_up
   hold_repeat_enabled: true
   data:
     entity_id: media_player.living_room_tv
 right_button_middle:
+  icon: mdi:volume-mute
   service: webostv.button
   data:
     entity_id: media_player.living_room_tv
     button: MUTE
 right_button_bottom:
-  service: media_player.volume_down
+  icon: mdi:volume-minus
   hold_repeat_enabled: true
+  service: media_player.volume_down
   data:
     entity_id: media_player.living_room_tv
 ```
