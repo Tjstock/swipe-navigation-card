@@ -1,5 +1,5 @@
-# xbox-swipe-navigation-card
-A card that allows you to control your xbox by using swipe gestures and buttons. This card is similar to the Xbox app's remote control.
+# swipe-navigation-card
+A card that allows you to control your media devices by using swipe gestures and buttons. This card is similar to the Xbox app's swipe navigation remote control.
 
 ![Card Example](example-card.png)
 ## Features
