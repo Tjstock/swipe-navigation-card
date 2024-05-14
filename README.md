@@ -1,7 +1,7 @@
 # xbox-swipe-navigation-card
 A card that allows you to control your xbox by using swipe gestures and buttons. This card is similar to the Xbox app's remote control.
 
-![Card Example](card-example.png)
+![Card Example](example-card.png)
 ## Features
 Please let me know of any new features that you would like to have! For example the ability to add Custom buttons, icons, styles, keyboard support etc.
 - Swiping anywhere on the center of the card will trigger a left, right, up, or down action based on the direciton you swiped.
