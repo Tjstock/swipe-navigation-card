@@ -7,13 +7,11 @@ class NavigationCard extends HTMLElement {
 
         //Init the card
         if (!this.card) {
-
+            
             let { touchpad, buttons } = this.buildCard();
-
+            
             let pressDown = function (e) {
-                // if (e.cancelable) {
-                    e.preventDefault();
-                // }
+                e.preventDefault();
 
                 xDown = e.clientX || e.touches[0].clientX;
                 yDown = e.clientY || e.touches[0].clientY;
@@ -90,30 +88,26 @@ class NavigationCard extends HTMLElement {
                 intervalIds = [];
                 _this.callHassService(hass, e.currentTarget.service, e.currentTarget.service_data);
             };
-            
+
             //Initilize Event Listeners
             ['touchstart','mousedown'].forEach(function(e) {
                 touchpad.addEventListener(e, pressDown);
-                buttons.forEach(function(b) {
-                    b.addEventListener(e, buttonDown);
+                buttons.forEach(function(bttn) {
+                    bttn.addEventListener(e, buttonDown);
                 });
             });
             ['mouseup','touchend'].forEach(function(e) {
-                buttons.forEach(function(b) {
-                    b.addEventListener(e, buttonRelease);
+                buttons.forEach(function(bttn) {
+                    bttn.addEventListener(e, buttonRelease);
                 });
             });
         }
     }
 
-    buildCard() {  
-        let buttons = [];
-    
-        // Set CSS
+    buildCard() {
+        //CSS
         const style = document.createElement('style');
         style.textContent = `
-                swipe-navigation-card{ }
-                ha-card {}
                 .nc-touchpad { 
                     display: grid; 
                     gap: 20px; 
@@ -144,125 +138,51 @@ class NavigationCard extends HTMLElement {
         //HA Card
         const card = document.createElement('ha-card');
         this.card = card;
-        this.appendChild(card);
+        this.appendChild(card);        
 
-        //Touchpad
+        //Build Touchpad and Buttons
+        let buttons = [];
         let touchpad = document.createElement('div');
-            touchpad.id = 'touchpad';
-            touchpad.className = 'nc-touchpad';
-        
+        touchpad.id = 'touchpad';
+        touchpad.className = 'nc-touchpad';
+        card.appendChild(touchpad);
 
         //Top Buttons
-        let top_button_left = document.createElement('ha-icon-button');
-            top_button_left.className = 'nc-button';
-            top_button_left.id = 'top_button_left';
-            top_button_left.service = this.config.top_button_left.service;
-            top_button_left.service_data = this.config.top_button_left.data;
-            top_button_left.innerHTML = '<ha-icon icon="mdi:menu"></ha-icon>'; 
-            buttons.push(top_button_left);
-        let top_button_middle = document.createElement('ha-icon-button');
-            top_button_middle.className = 'nc-button';
-            top_button_middle.id = 'top_button_middle';
-            top_button_middle.service = this.config.top_button_middle.service;
-            top_button_middle.service_data = this.config.top_button_middle.data;
-            top_button_middle.innerHTML = '<ha-icon icon="mdi:power"></ha-icon>'; 
-            buttons.push(top_button_middle);
-        let top_button_right = document.createElement('ha-icon-button');
-            top_button_right.className = 'nc-button';
-            top_button_right.id = 'top_button_right';
-            top_button_right.service = this.config.top_button_right.service;
-            top_button_right.service_data = this.config.top_button_right.data;
-            top_button_right.innerHTML = '<ha-icon icon="mdi:apps"></ha-icon>'; 
-            buttons.push(top_button_right);
+        buildAndAppendButton('top_button_left', this.config.top_button_left); 
+        buildAndAppendButton('top_button_middle', this.config.top_button_middle); 
+        buildAndAppendButton('top_button_right', this.config.top_button_right); 
             
         //Left Buttons
-        let left_button_top = document.createElement('ha-icon-button');
-            left_button_top.className = 'nc-button';
-            left_button_top.id = 'left_button_top';
-            left_button_top.service = this.config.left_button_top.service;
-            left_button_top.service_data = this.config.left_button_top.data;
-            left_button_top.innerHTML = '<ha-icon icon="mdi:arrow-left"></ha-icon>';            
-            buttons.push(left_button_top);
-        let left_button_middle = document.createElement('ha-icon-button');
-            left_button_middle.className = 'nc-button';
-            left_button_middle.id = 'left_button_middle';
-            left_button_middle.service = this.config.left_button_middle.service;
-            left_button_middle.service_data = this.config.left_button_middle.data;
-            left_button_middle.innerHTML = '<ha-icon icon="mdi:netflix"></ha-icon>';   
-            buttons.push(left_button_middle);
-        let left_button_bottom = document.createElement('ha-icon-button');
-            left_button_bottom.className = 'nc-button';
-            left_button_bottom.id = 'left_button_bottom';
-            left_button_bottom.service = this.config.left_button_bottom.service;
-            left_button_bottom.service_data = this.config.left_button_bottom.data;
-            left_button_bottom.innerHTML = '<ha-icon icon="mdi:hulu"></ha-icon>'; 
-            buttons.push(left_button_bottom);  
+        buildAndAppendButton('left_button_top', this.config.left_button_top);           
+        buildAndAppendButton('left_button_middle', this.config.left_button_middle);   
+        buildAndAppendButton('left_button_bottom', this.config.left_button_bottom); 
 
         //Right Buttons
-        let right_button_top = document.createElement('ha-icon-button');
-            right_button_top.className = 'nc-button';
-            right_button_top.id = 'right_button_top';
-            right_button_top.service = this.config.right_button_top.service;
-            right_button_top.service_data = this.config.right_button_top.data;
-            right_button_top.hold_repeat_enabled = this.config.right_button_top.hold_repeat_enabled | false;
-            right_button_top.innerHTML = '<ha-icon icon="mdi:volume-plus"></ha-icon>'; 
-            buttons.push(right_button_top);
-        let right_button_middle = document.createElement('ha-icon-button');
-            right_button_middle.className = 'nc-button';
-            right_button_middle.id = 'right_button_middle';
-            right_button_middle.service = this.config.right_button_middle.service;
-            right_button_middle.service_data = this.config.right_button_middle.data;
-            right_button_middle.innerHTML = '<ha-icon icon="mdi:volume-mute"></ha-icon>'; 
-            buttons.push(right_button_middle);
-        let right_button_bottom = document.createElement('ha-icon-button');
-            right_button_bottom.className = 'nc-button';
-            right_button_bottom.id = 'right_button_bottom';
-            right_button_bottom.service = this.config.right_button_bottom.service;
-            right_button_bottom.service_data = this.config.right_button_bottom.data;
-            right_button_bottom.hold_repeat_enabled = this.config.right_button_bottom.hold_repeat_enabled | false;
-            right_button_bottom.innerHTML = '<ha-icon icon="mdi:volume-minus"></ha-icon>'; 
-            buttons.push(right_button_bottom);
+        buildAndAppendButton('right_button_top', this.config.right_button_top);
+        buildAndAppendButton('right_button_middle', this.config.right_button_middle); 
+        buildAndAppendButton('right_button_bottom', this.config.right_button_bottom); 
         
         //Bottom Buttons
-        let bottom_button_left = document.createElement('ha-icon-button');
-            bottom_button_left.className = 'nc-button';
-            bottom_button_left.id = 'bottom_button_left';
-            bottom_button_left.service = this.config.bottom_button_left.service;
-            bottom_button_left.service_data = this.config.bottom_button_left.data;
-            bottom_button_left.innerHTML = '<ha-icon icon="mdi:rewind"></ha-icon>'; 
-            buttons.push(bottom_button_left);
-        let bottom_button_middle = document.createElement('ha-icon-button');
-            bottom_button_middle.className = 'nc-button';
-            bottom_button_middle.id = 'bottom_button_middle';
-            bottom_button_middle.service = this.config.bottom_button_middle.service;
-            bottom_button_middle.service_data = this.config.bottom_button_middle.data;
-            bottom_button_middle.innerHTML = '<ha-icon icon="mdi:play-pause"></ha-icon>'; 
-            buttons.push(bottom_button_middle);
-        let bottom_button_right = document.createElement('ha-icon-button');
-            bottom_button_right.className = 'nc-button';
-            bottom_button_right.id = 'bottom_button_right';
-            bottom_button_right.service = this.config.bottom_button_right.service;
-            bottom_button_right.service_data = this.config.bottom_button_right.data;
-            bottom_button_right.innerHTML = '<ha-icon icon="mdi:fast-forward"></ha-icon>'; 
-            buttons.push(bottom_button_right);   
-           
-            
-        touchpad.appendChild(top_button_left);
-        touchpad.appendChild(top_button_middle);
-        touchpad.appendChild(top_button_right);
-        touchpad.appendChild(left_button_top);
-        touchpad.appendChild(left_button_middle);
-        touchpad.appendChild(left_button_bottom);
-        touchpad.appendChild(right_button_top);
-        touchpad.appendChild(right_button_middle);
-        touchpad.appendChild(right_button_bottom);
-        touchpad.appendChild(bottom_button_left);
-        touchpad.appendChild(bottom_button_middle);
-        touchpad.appendChild(bottom_button_right)
-
-        card.appendChild(touchpad);
+        buildAndAppendButton('bottom_button_left', this.config.bottom_button_left); 
+        buildAndAppendButton('bottom_button_middle', this.config.bottom_button_middle); 
+        buildAndAppendButton('bottom_button_right', this.config.bottom_button_right); 
         
         return { touchpad, buttons };
+
+        function buildAndAppendButton(id, button_config) {
+            if(button_config == null) {
+                return;
+            }
+            let button = document.createElement('ha-icon-button');
+            button.className = 'nc-button';
+            button.id = id;
+            button.service = button_config.service;
+            button.service_data = button_config.data;
+            button.hold_repeat_enabled = button_config.hold_repeat_enabled | false;
+            button.innerHTML = '<ha-icon icon="' + button_config.icon + '"></ha-icon>';
+            buttons.push(button);
+            touchpad.appendChild(button);
+        }
     }
 
     callHassService(hass, domain_service , data) {
@@ -298,6 +218,38 @@ class NavigationCard extends HTMLElement {
     getCardSize() {
         return 9;
     }
+
+    static getConfigElement() {
+        return document.createElement("swipe-navigation-card-editor");
+    }
+    static getStubConfig() {
+        return {"swipe_left":{"service":"","data":{"entity_id":""}},"swipe_right":{"service":"","data":{"entity_id":""}},"swipe_up":{"service":"","data":{"entity_id":""}},"swipe_down":{"service":"","data":{"entity_id":""}},"tap_action":{"service":"","data":{"entity_id":""}},"top_button_left":{"icon":"","service":"","data":{"entity_id":""}},"top_button_middle":{"icon":"","service":"","data":{"entity_id":""}},"top_button_right":{"icon":"","service":"","data":{"entity_id":""}},"bottom_button_left":{"icon":"","service":"","data":{"entity_id":""}},"bottom_button_middle":{"icon":"","service":"","data":{"entity_id":""}},"bottom_button_right":{"icon":"","service":"","data":{"entity_id":""}},"left_button_top":{"icon":"","service":"","data":{"entity_id":""}},"left_button_middle":{"icon":"","service":"","data":{"entity_id":""}},"left_button_bottom":{"icon":"","service":"","data":{"entity_id":""}},"right_button_top":{"icon":"","service":"","hold_repeat_enabled":false,"data":{"entity_id":""}},"right_button_middle":{"icon":"","service":"","data":{"entity_id":""}},"right_button_bottom":{"icon":"","hold_repeat_enabled":false,"service":"","data":{"entity_id":""}}}
+    }
 }
 
 customElements.define("swipe-navigation-card", NavigationCard);
+
+class NavigationCardEditor extends HTMLElement {
+    setConfig(config) {
+      this._config = config;
+    }
+  
+    configChanged(newConfig) {
+      const event = new Event("config-changed", {
+        bubbles: true,
+        composed: true,
+      });
+      event.detail = { config: newConfig };
+      this.dispatchEvent(event);
+    }
+  }
+  
+  customElements.define("swipe-navigation-card-editor", NavigationCardEditor);
+  window.customCards = window.customCards || [];
+  window.customCards.push({
+    type: "swipe-navigation-card",
+    name: "Swipe Navigation Card",
+    preview: false, // Optional - defaults to false
+    description: "A Swipe Navigation Remote Card", // Optional
+    documentationURL: "https://github.com/Tjstock/swipe-navigation-card", // Adds a help link in the frontend card editor
+  });
