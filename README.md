@@ -9,25 +9,24 @@ Please let me know of any new features that you would like to have! For example 
    - Swiping from left to right triggers the right action.
    - Swiping from top to bottom triggers the down action.
    - Swiping from bottom to top triggers the up action.
-- Clicking anywhere on the center of the card will trigger the `touchpad` action which I use as the 'A', 'OK', or 'Select' button.
-- Buttons for 'X', 'Y', 'B', 'View', 'Xbox', 'Menu', 'Rewind', 'Play/Pause', 'Fast Forward', 'Volume Up', 'Volume Down', 'Volume Mute'
-- Ability to repeat actions on hold for the Volume Up and Volume Down buttons. Currently configured to repeat every 250ms. Will add config property if requested.
+- Clicking anywhere on the center of the card will trigger the `tap action` which I use as the 'A', 'OK', or 'Select' buttons.
+- 6 configurable Buttons that can be used for 'Power', 'Menu', 'Rewind', 'Play/Pause', 'Fast Forward', 'Volume Up', 'Volume Down', 'Volume Mute', etc.
+- Ability to repeat actions on hold. Currently configured to repeat every 250ms. Will add config property if requested.
 
 
 ## Installation
 
 1. Download the swipe-navigation-card.js file
 2. Place the file in your `config/www` folder
-3. Include the card code in your resources section
+3. Include the card code in your resources
 
    ```yaml
-   title: Home
    resources:
      - url: /local/swipe-navigation-card.js
        type: js
    ```
 
-4. Add configuration for the card in your `ui-lovelace.yaml`
+4. Add a manual card configuration. See configuration below.
 
 ## Configuration
 
@@ -35,15 +34,16 @@ Please let me know of any new features that you would like to have! For example 
 | --------------------- | --------------- | ------------ | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `type`                | string          | **Required** | `custom:xbox-swipe-navigation-card`                    | Type of the card |
 | `swipe_left`<br/>`swipe_right`<br/>`swipe_up`<br/>`swipe_down`| object          | **Required** |  See Example           | Object to define the actions for left, right, up and down swipe gestures |
-| `button_actions`      | object          | **Required** | See Example       | Object to define the actions for `touchpad` (select, A, OK) and all other buttons  |
-| `hold_repeat_enabled`| boolean| false | `true` \| `false` | Defines if the hold action should be enabled. Only available for the `volume_up` and `volume_down` buttons|
+| `top_button_left`<br/>`top_button_middle`<br/>`top_button_right`<br/>`bottom_button_left`<br/>`bottom_button_middle`<br/>`bottom_button_right`<br/>`left_button_top`<br/>`left_button_middle`<br/>`left_button_bottom`<br/>`right_button_top`<br/>`right_button_middle`<br/>`right_button_bottom`      | object          | **Required** | See Example       | Object to define the actions for the buttons |
+| `tap_action`| string| **Required** | See Example | Defines what action to take when you tap the card anywhere there is not a button |
+| `hold_repeat_enabled`| boolean| false | `true` \| `false` | Defines if the hold action should be enabled. Only available for the `right_button_top` and `right_button_bottom` buttons right now|
+| `button_icon`| string| **Required** | Any MDI | MDI to set for the button it is defined in |
 | `service`| string| **Required** | Any service | Service to call (e.g. `remote.send_command`, `media_player.volume_up`, etc.)|
 | `data`| object| **Required** | Any service data | Service data to include (e.g. `entity_id: media_player.receiver`)|
 
 ### Example
-Currently all `swipe_actions` and `button_actions` configurations are required but may become optional in the future.
+Currently, all `swipe_actions` and `button_actions` configurations are required but will become optional in the future.
 
-NOTE: Using home assistants [Xbox Integration](https://www.home-assistant.io/integrations/xbox/) will also work! I was just using my harmony hub prior to integration's release.
 
 ```yaml
 type: custom:swipe-navigation-card
