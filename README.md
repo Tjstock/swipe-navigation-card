@@ -16,14 +16,14 @@ Please let me know of any new features that you would like to have! For example 
 
 ## Installation
 
-1. Download the xbox-swipe-navigation-card.js file
+1. Download the swipe-navigation-card.js file
 2. Place the file in your `config/www` folder
-3. Include the card code in your `ui-lovelace-card.yaml` resources section
+3. Include the card code in your resources section
 
    ```yaml
    title: Home
    resources:
-     - url: /local/xbox-swipe-navigation-card.js
+     - url: /local/swipe-navigation-card.js
        type: js
    ```
 
@@ -34,7 +34,7 @@ Please let me know of any new features that you would like to have! For example 
 | Name                  | Type            | Default      | Supported options                                      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | --------------------- | --------------- | ------------ | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `type`                | string          | **Required** | `custom:xbox-swipe-navigation-card`                    | Type of the card |
-| `swipe_actions`       | object          | **Required** |  See Example           | Object to define the actions for left, right, up and down swipe gestures |
+| `swipe_left`<br/>`swipe_right`<br/>`swipe_up`<br/>`swipe_down`| object          | **Required** |  See Example           | Object to define the actions for left, right, up and down swipe gestures |
 | `button_actions`      | object          | **Required** | See Example       | Object to define the actions for `touchpad` (select, A, OK) and all other buttons  |
 | `hold_repeat_enabled`| boolean| false | `true` \| `false` | Defines if the hold action should be enabled. Only available for the `volume_up` and `volume_down` buttons|
 | `service`| string| **Required** | Any service | Service to call (e.g. `remote.send_command`, `media_player.volume_up`, etc.)|
@@ -46,107 +46,88 @@ Currently all `swipe_actions` and `button_actions` configurations are required b
 NOTE: Using home assistants [Xbox Integration](https://www.home-assistant.io/integrations/xbox/) will also work! I was just using my harmony hub prior to integration's release.
 
 ```yaml
-type: 'custom:xbox-swipe-navigation-card'
-swipe_actions:
-  left: 
-    service: remote.send_command
-    data:
-      entity_id: remote.harmony_hub
-      device: Xbox
-      command: DirectionLeft
-  right: 
-    service: remote.send_command
-    data:
-      entity_id: remote.harmony_hub
-      device: Xbox
-      command: DirectionRight
-  up: 
-    service: remote.send_command
-    data:
-      entity_id: remote.harmony_hub
-      device: Xbox
-      command: DirectionUp
-  down:
-    service: remote.send_command
-    data:
-      entity_id: remote.harmony_hub
-      device: Xbox
-      command: DirectionDown
-button_actions:
-  touchpad: 
-    service: remote.send_command
-    data:
-      entity_id: remote.harmony_hub
-      device: Xbox
-      command: OK
-  view: 
-    service: remote.send_command
-    data:
-      entity_id: remote.harmony_hub
-      device: Xbox
-      command: View
-  xbox: 
-    service: remote.send_command
-    data:
-      entity_id: remote.harmony_hub
-      device: Xbox
-      command: Xbox
-  menu: 
-    service: remote.send_command
-    data:
-      entity_id: remote.harmony_hub
-      device: Xbox
-      command: Menu
-  rewind:
-    service: remote.send_command
-    data:
-      entity_id: remote.harmony_hub
-      device: Xbox
-      command: Rewind
-  play_pause:
-    service: remote.send_command
-    data:
-      entity_id: remote.harmony_hub
-      device: Xbox
-      command: Play/Pause
-  fast_forward:
-    service: remote.send_command
-    data:
-      entity_id: remote.harmony_hub
-      device: Xbox
-      command: FastForward
-  b: 
-    service: remote.send_command
-    data:
-      entity_id: remote.harmony_hub
-      device: Xbox
-      command: B
-  y: 
-    service: remote.send_command
-    data:
-      entity_id: remote.harmony_hub
-      device: Xbox
-      command: 'Y'
-  x: 
-    service: remote.send_command
-    data:
-      entity_id: remote.harmony_hub
-      device: Xbox
-      command: X
-  volume_up: 
-    service: media_player.volume_up
-    hold_repeat_enabled: true
-    data:
-      entity_id: media_player.receiver
-  volume_mute: 
-    service: remote.send_command
-    data:
-      entity_id: remote.harmony_hub
-      device: Receiver
-      command: Mute
-  volume_down: 
-    service: media_player.volume_down
-    hold_repeat_enabled: true
-    data:
-      entity_id: media_player.receiver
+type: custom:swipe-navigation-card
+swipe_left:
+  service: webostv.button
+  data:
+    entity_id: media_player.living_room_tv
+    button: LEFT
+swipe_right:
+  service: webostv.button
+  data:
+    entity_id: media_player.living_room_tv
+    button: RIGHT
+swipe_up:
+  service: webostv.button
+  data:
+    entity_id: media_player.living_room_tv
+    button: UP
+swipe_down:
+  service: webostv.button
+  data:
+    entity_id: media_player.living_room_tv
+    button: DOWN
+tap_action:
+  service: webostv.button
+  data:
+    entity_id: media_player.living_room_tv
+    button: ENTER
+top_button_left:
+  service: webostv.button
+  data:
+    entity_id: media_player.living_room_tv
+    button: MENU
+top_button_middle:
+  service: media_player.toggle
+  data:
+    entity_id: media_player.living_room_tv
+top_button_right:
+  service: androidtv.adb_command
+  data:
+    entity_id: media_player.android_tv
+    command: HOME
+bottom_button_left:
+  service: androidtv.adb_command
+  data:
+    entity_id: media_player.android_tv
+    command: REWIND
+bottom_button_middle:
+  service: media_player.media_play_pause
+  data:
+    entity_id: media_player.living_room_tv
+bottom_button_right:
+  service: androidtv.adb_command
+  data:
+    entity_id: media_player.android_tv
+    command: FAST_FORWARD
+left_button_top:
+  service: webostv.button
+  data:
+    entity_id: media_player.living_room_tv
+    button: BACK
+left_button_middle:
+  service: media_player.select_source
+  data:
+    source: Netflix
+    entity_id: media_player.android_tv
+left_button_bottom:
+  service: media_player.select_source
+  data:
+    source: Hulu
+    entity_id: media_player.android_tv
+right_button_top:
+  service: media_player.volume_up
+  hold_repeat_enabled: true
+  data:
+    entity_id: media_player.living_room_tv
+right_button_middle:
+  service: webostv.button
+  data:
+    entity_id: media_player.living_room_tv
+    button: MUTE
+right_button_bottom:
+  service: media_player.volume_down
+  hold_repeat_enabled: true
+  data:
+    entity_id: media_player.living_room_tv
 ```
