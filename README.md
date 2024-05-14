@@ -1,10 +1,10 @@
 # swipe-navigation-card
-A card that allows you to control your media devices by using swipe gestures and buttons. This card is similar to the Xbox app's swipe navigation remote control.
+A card that allows you to control your media devices by using swipe gestures and buttons.
 
 ![Card Example](example-card.png)
 ## Features
-Please let me know of any new features that you would like to have! For example the ability to add Custom buttons, icons, styles, keyboard support etc.
-- Swiping anywhere on the center of the card will trigger a left, right, up, or down action based on the direciton you swiped.
+Please let me know of any new features that you would like to have! For example, the ability to add Custom buttons, icons, styles, keyboard support etc.
+- Swiping anywhere on the center of the card will trigger a left, right, up, or down action based on the direction you swiped.
    - Swiping from right to left triggers the left action.
    - Swiping from left to right triggers the right action.
    - Swiping from top to bottom triggers the down action.
@@ -32,7 +32,7 @@ Please let me know of any new features that you would like to have! For example 
 
 | Name                  | Type            | Default      | Supported options                                      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | --------------------- | --------------- | ------------ | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `type`                | string          | **Required** | `custom:xbox-swipe-navigation-card`                    | Type of the card |
+| `type`                | string          | **Required** | `custom:swipe-navigation-card`                    | Type of the card |
 | `swipe_left`<br/>`swipe_right`<br/>`swipe_up`<br/>`swipe_down`| object          | **Required** |  See Example           | Object to define the actions for left, right, up and down swipe gestures |
 | `tap_action`| object| **Required** | See Example | Defines what action to take when you tap the card anywhere there is not a button |
 |`top_button_left`<br/>`top_button_middle`<br/>`top_button_right`<br/>`bottom_button_left`<br/>`bottom_button_middle`<br/>`bottom_button_right`<br/>`left_button_top`<br/>`left_button_middle`<br/>`left_button_bottom`<br/>`right_button_top`<br/>`right_button_middle`<br/>`right_button_bottom`      | object          | **Not Required** | See Example       | Object to define the actions for the buttons |
