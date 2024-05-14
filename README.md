@@ -10,7 +10,7 @@ Please let me know of any new features that you would like to have! For example,
    - Swiping from top to bottom triggers the down action.
    - Swiping from bottom to top triggers the up action.
 - Clicking anywhere on the center of the card will trigger the `tap action` which I use as the 'A', 'OK', or 'Select' buttons.
-- 6 configurable Buttons that can be used for 'Power', 'Menu', 'Rewind', 'Play/Pause', 'Fast Forward', 'Volume Up', 'Volume Down', 'Volume Mute', etc.
+- 12 configurable Buttons that can be used for 'Power', 'Menu', 'Rewind', 'Play/Pause', 'Fast Forward', 'Volume Up', 'Volume Down', 'Volume Mute', etc.
 - Ability to repeat actions on hold. Currently configured to repeat every 250ms. Will add config property if requested.
 
 
