@@ -36,7 +36,7 @@ Please let me know of any new features that you would like to have! For example,
 | `swipe_left`<br/>`swipe_right`<br/>`swipe_up`<br/>`swipe_down`| object          | **Required** |  See Example           | Object to define the actions for left, right, up and down swipe gestures |
 | `tap_action`| object| **Required** | See Example | Defines what action to take when you tap the card anywhere there is not a button |
 |`top_button_left`<br/>`top_button_middle`<br/>`top_button_right`<br/>`bottom_button_left`<br/>`bottom_button_middle`<br/>`bottom_button_right`<br/>`left_button_top`<br/>`left_button_middle`<br/>`left_button_bottom`<br/>`right_button_top`<br/>`right_button_middle`<br/>`right_button_bottom`      | object          | null | See Example       | Object to define the actions for the buttons |
-| `hold_repeat_enabled`| boolean| false | `true` \| `false` | Defines if the hold action should be enabled. Only available for the `right_button_top` and `right_button_bottom` buttons right now|
+| `hold_repeat_enabled`| boolean| false | `true` \| `false` | Defines if the hold action should be enabled|
 | `icon`| string| null | Any MDI | MDI to set for the button it is defined in |
 | `service`| string| **Required for actions** | Any service | Service to call for the button/gesture (e.g. `remote.send_command`, `media_player.volume_up`, etc.)|
 | `data`| object| **Required for actions** | Any service data | Service data to include for the button/gesture (e.g. `entity_id: media_player.receiver`)|
