@@ -1,4 +1,3 @@
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/tjstock)
 # swipe-navigation-card
 A card that allows you to control your media devices by using swipe gestures and buttons.
 
@@ -143,3 +142,5 @@ right_button_bottom:
   data:
     entity_id: media_player.living_room_tv
 ```
+### Love the card?
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/tjstock)
