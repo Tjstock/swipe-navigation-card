@@ -1,3 +1,6 @@
+[!["GitHub Release"](https://img.shields.io/github/v/release/tjstock/swipe-navigation-card.svg?style=for-the-badge)](https://github.com/Tjstock/swipe-navigation-card/releases)
+[!["Community Forum"](https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge)](https://community.home-assistant.io/t/swipe-navigation-remote-card/729641)
+
 # swipe-navigation-card
 A card that allows you to control your media devices by using swipe gestures and buttons.
 
