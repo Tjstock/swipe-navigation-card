@@ -4,14 +4,17 @@ class NavigationCard extends HTMLElement {
         var xDown, yDown, xDiff, yDiff;
         var is_swipe = false;
         var intervalIds = [];
+        var is_two_finger_touch = false;
 
         //Init the card
         if (!this.card) {
-            
             let { touchpad, buttons } = this.buildCard();
             
             let pressDown = function (e) {
                 e.preventDefault();
+                if(e.touches && e.touches.length > 1) { 
+                    is_two_finger_touch = true;
+                }
 
                 xDown = e.clientX || e.touches[0].clientX;
                 yDown = e.clientY || e.touches[0].clientY;
@@ -23,7 +26,6 @@ class NavigationCard extends HTMLElement {
             };
             
             let pressMove = function (e) {
-                
                 if (xDown && yDown) {
                     xDiff = xDown - (e.clientX || e.touches[0].clientX);
                     yDiff = yDown - (e.clientY || e.touches[0].clientY);
@@ -43,27 +45,28 @@ class NavigationCard extends HTMLElement {
                     if (Math.abs(xDiff) > Math.abs(yDiff)) {
                         if (xDiff > 0) {
                             //Left Swipe
-                            _this.callHassService(hass, _this.config.swipe_left.service, _this.config.swipe_left.data);
+                            is_two_finger_touch ? callTwoFingerTouchService(_this.config.two_finger_swipe_left) : _this.callHassService(hass, _this.config.swipe_left.service, _this.config.swipe_left.data);
                         } else {
                             //Right Swipe
-                            _this.callHassService(hass, _this.config.swipe_right.service, _this.config.swipe_right.data);
+                            is_two_finger_touch ? callTwoFingerTouchService(_this.config.two_finger_swipe_right) : _this.callHassService(hass, _this.config.swipe_right.service, _this.config.swipe_right.data);
                         }
                     } else {
                         if (yDiff > 0) {
                             //Up Swipe
-                            _this.callHassService(hass, _this.config.swipe_up.service, _this.config.swipe_up.data);
+                            is_two_finger_touch ? callTwoFingerTouchService(_this.config.two_finger_swipe_up) : _this.callHassService(hass, _this.config.swipe_up.service, _this.config.swipe_up.data);
                         } else {
                             //Down Swipe
-                            _this.callHassService(hass, _this.config.swipe_down.service, _this.config.swipe_down.data);
+                            is_two_finger_touch ? callTwoFingerTouchService(_this.config.two_finger_swipe_down) : _this.callHassService(hass, _this.config.swipe_down.service, _this.config.swipe_down.data);
                         }
                     }
-                    //Reset
-                    xDown, yDown, xDiff, yDiff = null;
-                    is_swipe = false;
                 }
                 else if(e.button == undefined || e.button == 0) {
                     _this.callHassService(hass, _this.config.tap_action.service, _this.config.tap_action.data);
                 }
+                //Reset
+                xDown, yDown, xDiff, yDiff = null;
+                is_swipe = false;
+                is_two_finger_touch = false;
             }; 
 
             let buttonDown = function (e) {
@@ -101,6 +104,12 @@ class NavigationCard extends HTMLElement {
                     bttn.addEventListener(e, buttonRelease);
                 });
             });
+        }
+
+        function callTwoFingerTouchService(twoFingerConfig) {
+            if(twoFingerConfig) {
+                _this.callHassService(hass, twoFingerConfig.service, twoFingerConfig.data);
+            }
         }
     }
 
@@ -186,9 +195,15 @@ class NavigationCard extends HTMLElement {
     }
 
     callHassService(hass, domain_service , data) {
-        let split = domain_service.split(".");
+        let split = domain_service.split('.');
         var domain = split[0];
         var service = split[1];
+        const event = new Event('haptic', {
+            bubbles: true,
+            composed: true,
+        });
+        event.detail = 'light';
+        this.dispatchEvent(event);
         hass.callService(domain, service, data);
     }
 
