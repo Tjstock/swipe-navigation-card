@@ -45,21 +45,27 @@ For a more in depth guide on how to install custom plugins outside of HACS pleas
 | `swipe_right`          | Swipe Object        | **Required** | See Example                    | Object to define the action for right swipe gesture                                                 |
 | `swipe_up`             | Swipe Object        | **Required** | See Example                    | Object to define the action for up swipe gesture                                                    |
 | `swipe_down`           | Swipe Object        | **Required** | See Example                    | Object to define the action for down swipe gesture                                                  |
+| `two_finger_swipe_left`| Swipe Object        | none         | See Example                    | Object to define the action for two finger left swipe gesture                                       |
+| `two_finger_swipe_right`| Swipe Object       | none         | See Example                    | Object to define the action for two finger right swipe gesture                                      |
+| `two_finger_swipe_up`  | Swipe Object        | none         | See Example                    | Object to define the action for two finger up swipe gesture                                         |
+| `two_finger_swipe_down`| Swipe Object        | none         | See Example                    | Object to define the action for two finger down swipe gesture                                       |
 | `tap_action`           | Tap Object          | **Required** | See Example                    | Defines what action to take when you tap the card anywhere there is not a button                    |
-| `top_button_left`      | Button Object       | null         | See Example                    | Object to define the action for the top left button                                                 |
-| `top_button_middle`    | Button Object       | null         | See Example                    | Object to define the action for the top middle button                                               |
-| `top_button_right`     | Button Object       | null         | See Example                    | Object to define the action for the top right button                                                |
-| `bottom_button_left`   | Button Object       | null         | See Example                    | Object to define the action for the bottom left button                                              |
-| `bottom_button_middle` | Button Object       | null         | See Example                    | Object to define the action for the bottom middle button                                            |
-| `bottom_button_right`  | Button Object       | null         | See Example                    | Object to define the action for the bottom right button                                             |
-| `left_button_top`      | Button Object       | null         | See Example                    | Object to define the action for the left top button                                                 |
-| `left_button_middle`   | Button Object       | null         | See Example                    | Object to define the action for the left middle button                                              |
-| `left_button_bottom`   | Button Object       | null         | See Example                    | Object to define the action for the left bottom button                                              |
-| `right_button_top`     | Button Object       | null         | See Example                    | Object to define the action for the right top button                                                |
-| `right_button_middle`  | Button Object       | null         | See Example                    | Object to define the action for the right middle button                                             |
-| `right_button_bottom`  | Button Object       | null         | See Example                    | Object to define the action for the right bottom button                                             |
+| `top_button_left`      | Button Object       | none         | See Example                    | Object to define the action for the top left button                                                 |
+| `top_button_middle`    | Button Object       | none         | See Example                    | Object to define the action for the top middle button                                               |
+| `top_button_right`     | Button Object       | none         | See Example                    | Object to define the action for the top right button                                                |
+| `bottom_button_left`   | Button Object       | none         | See Example                    | Object to define the action for the bottom left button                                              |
+| `bottom_button_middle` | Button Object       | none         | See Example                    | Object to define the action for the bottom middle button                                            |
+| `bottom_button_right`  | Button Object       | none         | See Example                    | Object to define the action for the bottom right button                                             |
+| `left_button_top`      | Button Object       | none         | See Example                    | Object to define the action for the left top button                                                 |
+| `left_button_middle`   | Button Object       | none         | See Example                    | Object to define the action for the left middle button                                              |
+| `left_button_bottom`   | Button Object       | none         | See Example                    | Object to define the action for the left bottom button                                              |
+| `right_button_top`     | Button Object       | none         | See Example                    | Object to define the action for the right top button                                                |
+| `right_button_middle`  | Button Object       | none         | See Example                    | Object to define the action for the right middle button                                             |
+| `right_button_bottom`  | Button Object       | none         | See Example                    | Object to define the action for the right bottom button                                             |
 | `hold_repeat_enabled`  | Boolean             | false        | `true` or `false`              | Defines if the hold action should be enabled for a Button Object                                    |
-| `icon`                 | String              | null         | Any MDI                        | MDI to set for the Button                                                                           |
+| `icon`                 | String              | none         | Any MDI                        | MDI to set for the Button                                                                           |
+| `color`                | String              | none         | Any CSS color                  | Color of the Button                                                                                 |
+| `size`                 | String              | 48px         | Any Pixel Size                 | Size of the Button                                                                                  |
 | `service`              | String              | **Required** | Any Service                    | Service to call for the button/gesture (e.g. `remote.send_command`, `media_player.volume_up`, etc.) |
 | `data`                 | Service Data Object | **Required** | Any Service Data               | Service data to include for the button/gesture (e.g. `entity_id: media_player.receiver`)            |
 
@@ -69,6 +75,7 @@ Currently, the `tap action` and all `swipe action` configurations are required, 
 
 ```yaml
 type: custom:swipe-navigation-card
+haptic: light
 swipe_left:
   service: webostv.button
   data:
@@ -94,6 +101,23 @@ tap_action:
   data:
     entity_id: media_player.living_room_tv
     button: ENTER
+two_finger_swipe_left:
+  service: webostv.button
+  data:
+    entity_id: media_player.living_room_tv
+    button: BACK
+two_finger_swipe_right:
+  service: media_player.media_play_pause
+  data:
+    entity_id: media_player.living_room_tv
+two_finger_swipe_up:
+  service: media_player.volume_up
+  data:
+    entity_id: media_player.living_room_tv
+two_finger_swipe_down:
+  service: media_player.volume_down
+  data:
+    entity_id: media_player.living_room_tv
 top_button_left:
   icon: mdi:menu
   service: webostv.button
@@ -113,6 +137,7 @@ top_button_right:
     command: HOME
 bottom_button_left:
   icon: mdi:rewind
+  color: '#BABABA'
   service: androidtv.adb_command
   data:
     entity_id: media_player.android_tv
@@ -124,6 +149,7 @@ bottom_button_middle:
     entity_id: media_player.living_room_tv
 bottom_button_right:
   icon: mdi:fast-forward
+  color: '#BABABA'
   service: androidtv.adb_command
   data:
     entity_id: media_player.android_tv
@@ -136,12 +162,14 @@ left_button_top:
     button: BACK
 left_button_middle:
   icon: mdi:netflix
+  color: '#E50914'
   service: media_player.select_source
   data:
     source: Netflix
     entity_id: media_player.android_tv
 left_button_bottom:
   icon: mdi:hulu
+  color: '#66aa33'
   service: media_player.select_source
   data:
     source: Hulu
@@ -154,6 +182,7 @@ right_button_top:
     entity_id: media_player.living_room_tv
 right_button_middle:
   icon: mdi:volume-mute
+  color: red
   service: webostv.button
   data:
     entity_id: media_player.living_room_tv
