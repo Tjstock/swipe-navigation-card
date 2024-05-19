@@ -2,195 +2,203 @@ class NavigationCard extends HTMLElement {
     set hass(hass) {
         const _this = this;
         var xDown, yDown, xDiff, yDiff;
-        var is_swipe = false;
         var intervalIds = [];
+        var is_swipe = false;
+        var is_two_finger_touch = false;
 
-        //Init the card
+        //Initialize the Card if it's not there yet
         if (!this.card) {
+            initializeCard();
+        }
+        
+        function initializeCard() {
+            //CSS
+            const style = document.createElement('style');
+            style.textContent = `
+                    .nc-touchpad { 
+                        display: grid; 
+                        gap: 20px; 
+                        aspect-ratio: 1; 
+                        grid-template-areas: ' .  tbl tbm tbr  . ' 
+                                             'lbt  .   .   .  rbt' 
+                                             'lbm  .   .   .  rbm'
+                                             'lbb  .   .   .  rbb'
+                                             ' .  bbl bbm bbr  . '
+                    }
+                    .nc-button { justify-content: center; align-content: center; display: inline-grid;}
+                    ha-icon { display: grid; align-content:center; justify-content: center; }
+                    #top_button_left { grid-area: tbl;}
+                    #top_button_middle { grid-area: tbm; }
+                    #top_button_right { grid-area: tbr;  }
+                    #left_button_top { grid-area: lbt; }
+                    #left_button_middle { grid-area: lbm; }
+                    #left_button_bottom { grid-area: lbb; }
+                    #right_button_top { grid-area: rbt; }
+                    #right_button_middle { grid-area: rbm; }
+                    #right_button_bottom { grid-area: rbb; }
+                    #bottom_button_left { grid-area: bbl; }
+                    #bottom_button_middle { grid-area: bbm; }
+                    #bottom_button_right { grid-area: bbr; }
+                `;
+            _this.appendChild(style);
             
-            let { touchpad, buttons } = this.buildCard();
+            //HA Card
+            const card = document.createElement('ha-card');
+            _this.card = card;
+            _this.appendChild(card);        
+    
+            //Build Touchpad
+            let touchpad = document.createElement('div');
+            touchpad.id = 'touchpad';
+            touchpad.className = 'nc-touchpad';
+            card.appendChild(touchpad);
             
-            let pressDown = function (e) {
-                e.preventDefault();
+            let buttons = [];
+            //Top Buttons
+            buildAndAppendButton('top_button_left', _this.config.top_button_left); 
+            buildAndAppendButton('top_button_middle', _this.config.top_button_middle); 
+            buildAndAppendButton('top_button_right', _this.config.top_button_right); 
+                
+            //Left Buttons
+            buildAndAppendButton('left_button_top', _this.config.left_button_top);           
+            buildAndAppendButton('left_button_middle', _this.config.left_button_middle);   
+            buildAndAppendButton('left_button_bottom', _this.config.left_button_bottom); 
+    
+            //Right Buttons
+            buildAndAppendButton('right_button_top', _this.config.right_button_top);
+            buildAndAppendButton('right_button_middle', _this.config.right_button_middle); 
+            buildAndAppendButton('right_button_bottom', _this.config.right_button_bottom); 
+            
+            //Bottom Buttons
+            buildAndAppendButton('bottom_button_left', _this.config.bottom_button_left); 
+            buildAndAppendButton('bottom_button_middle', _this.config.bottom_button_middle); 
+            buildAndAppendButton('bottom_button_right', _this.config.bottom_button_right); 
+            
+            //Initilize Event Listeners
+            ['touchstart', 'mousedown'].forEach(e => {
+                touchpad.addEventListener(e, touchStart);
+                buttons.forEach(bttn => bttn.addEventListener(e, buttonDown));
+            });
+            ['mouseup', 'touchend'].forEach(e => {
+                buttons.forEach(bttn => bttn.addEventListener(e, buttonRelease));
+            });
+    
+            // Card Creation Functions
+            function buildAndAppendButton(id, button_config) {
+                if(!button_config) {
+                    return;
+                }
+                let button = document.createElement('ha-icon-button');
+                button.className = 'nc-button';
+                button.id = id;
+                button.service = button_config.service;
+                button.service_data = button_config.data;
+                button.hold_repeat_enabled = button_config.hold_repeat_enabled | false;
+                button.innerHTML = '<ha-icon icon="' + button_config.icon + '"></ha-icon>';
+                button.style.color = button_config.color;
+                button.style.setProperty('--mdc-icon-size', button_config.size || '48px');
+                buttons.push(button);
+                touchpad.appendChild(button);
+            }
 
+            //Event Listener Functions
+            function touchStart(e) {
+                e.preventDefault();
+                is_two_finger_touch = e.touches && e.touches.length > 1;
+    
                 xDown = e.clientX || e.touches[0].clientX;
                 yDown = e.clientY || e.touches[0].clientY;
-                    
-                document.addEventListener('touchmove', pressMove);
-                document.addEventListener('mousemove', pressMove);
-                document.addEventListener('touchend', pressRelease);
-                document.addEventListener('mouseup', pressRelease, false);
-            };
+
+                document.addEventListener('touchmove', touchMove);
+                document.addEventListener('mousemove', touchMove);
+                document.addEventListener('touchend', touchEnd);
+                document.addEventListener('mouseup', touchEnd, false);
+            }
             
-            let pressMove = function (e) {
-                
-                if (xDown && yDown) {
-                    xDiff = xDown - (e.clientX || e.touches[0].clientX);
-                    yDiff = yDown - (e.clientY || e.touches[0].clientY);
-                }
-                if(Math.abs(xDiff) > 2 || Math.abs(yDiff) > 2) {
-                    is_swipe = true;
-                }
-            };
-
-            let pressRelease = function (e) {
-                document.removeEventListener('touchmove', pressMove);
-                document.removeEventListener('mousemove', pressMove);
-                document.removeEventListener('touchend', pressRelease);
-                document.removeEventListener('mouseup', pressRelease);
-
-                if(is_swipe) {
+            function touchMove(e) {
+                xDiff = xDown - (e.clientX || e.touches[0].clientX);
+                yDiff = yDown - (e.clientY || e.touches[0].clientY);
+                is_swipe = Math.abs(xDiff) > 2 || Math.abs(yDiff) > 2;
+            }
+    
+            function touchEnd(e) {
+                ['touchmove', 'mousemove'].forEach(e => document.removeEventListener(e, touchMove));
+                ['touchend', 'mouseup'].forEach(e => document.removeEventListener(e, touchEnd));
+    
+                if (is_swipe) {
                     if (Math.abs(xDiff) > Math.abs(yDiff)) {
                         if (xDiff > 0) {
                             //Left Swipe
-                            _this.callHassService(hass, _this.config.swipe_left.service, _this.config.swipe_left.data);
+                            is_two_finger_touch ? callTwoFingerTouchService(_this.config.two_finger_swipe_left) : callHassService(hass, _this.config.swipe_left.service, _this.config.swipe_left.data);
                         } else {
                             //Right Swipe
-                            _this.callHassService(hass, _this.config.swipe_right.service, _this.config.swipe_right.data);
+                            is_two_finger_touch ? callTwoFingerTouchService(_this.config.two_finger_swipe_right) : callHassService(hass, _this.config.swipe_right.service, _this.config.swipe_right.data);
                         }
                     } else {
                         if (yDiff > 0) {
                             //Up Swipe
-                            _this.callHassService(hass, _this.config.swipe_up.service, _this.config.swipe_up.data);
+                            is_two_finger_touch ? callTwoFingerTouchService(_this.config.two_finger_swipe_up) : callHassService(hass, _this.config.swipe_up.service, _this.config.swipe_up.data);
                         } else {
                             //Down Swipe
-                            _this.callHassService(hass, _this.config.swipe_down.service, _this.config.swipe_down.data);
+                            is_two_finger_touch ? callTwoFingerTouchService(_this.config.two_finger_swipe_down) : callHassService(hass, _this.config.swipe_down.service, _this.config.swipe_down.data);
                         }
                     }
-                    //Reset
-                    xDown, yDown, xDiff, yDiff = null;
-                    is_swipe = false;
                 }
-                else if(e.button == undefined || e.button == 0) {
-                    _this.callHassService(hass, _this.config.tap_action.service, _this.config.tap_action.data);
+                else if (!e.button) {
+                    callHassService(hass, _this.config.tap_action.service, _this.config.tap_action.data);
                 }
-            }; 
-
-            let buttonDown = function (e) {
+                //Reset
+                xDown, yDown, xDiff, yDiff = null;
+                is_swipe = false;
+                is_two_finger_touch = false;
+            } 
+    
+            function buttonDown(e) {
                 if (e.cancelable) {
                     e.preventDefault();
                 }
                 e.stopPropagation();
-                if(e.button == undefined || e.button == 0) {
+                if (!e.button) {
                     var service = e.currentTarget.service;
                     var service_data = e.currentTarget.service_data;
-
-                    if(e.currentTarget.hold_repeat_enabled) {
-                        intervalIds.push(setInterval(function() {
-                            _this.callHassService(hass, service, service_data);
+    
+                    if (e.currentTarget.hold_repeat_enabled) {
+                        intervalIds.push(setInterval(function () {
+                            callHassService(hass, service, service_data);
                         }, 250));
                     }
                 }
-            };
-
-            let buttonRelease = function (e) {
+            }
+    
+            function buttonRelease(e) {
                 intervalIds.forEach(clearInterval);
                 intervalIds = [];
-                _this.callHassService(hass, e.currentTarget.service, e.currentTarget.service_data);
-            };
-
-            //Initilize Event Listeners
-            ['touchstart','mousedown'].forEach(function(e) {
-                touchpad.addEventListener(e, pressDown);
-                buttons.forEach(function(bttn) {
-                    bttn.addEventListener(e, buttonDown);
-                });
-            });
-            ['mouseup','touchend'].forEach(function(e) {
-                buttons.forEach(function(bttn) {
-                    bttn.addEventListener(e, buttonRelease);
-                });
-            });
-        }
-    }
-
-    buildCard() {
-        //CSS
-        const style = document.createElement('style');
-        style.textContent = `
-                .nc-touchpad { 
-                    display: grid; 
-                    gap: 20px; 
-                    aspect-ratio: 1; 
-                    grid-template-areas: ' .  tbl tbm tbr  . ' 
-                                         'lbt  .   .   .  rbt' 
-                                         'lbm  .   .   .  rbm'
-                                         'lbb  .   .   .  rbb'
-                                         ' .  bbl bbm bbr  . '
-                }
-                .nc-button { justify-content: center; align-content: center; display: inline-grid; --mdc-icon-size: 48px; }
-                ha-icon { display: grid; align-content:center; justify-content: center; }
-                #top_button_left { grid-area: tbl;}
-                #top_button_middle { grid-area: tbm; }
-                #top_button_right { grid-area: tbr;  }
-                #left_button_top { grid-area: lbt; }
-                #left_button_middle { grid-area: lbm;  color: #E50914; }
-                #left_button_bottom { grid-area: lbb;  color: #66aa33; }
-                #right_button_top { grid-area: rbt; }
-                #right_button_middle { grid-area: rbm; color: red;}
-                #right_button_bottom { grid-area: rbb; }
-                #bottom_button_left { grid-area: bbl; color: #BABABA; }
-                #bottom_button_middle { grid-area: bbm; }
-                #bottom_button_right { grid-area: bbr; color: #BABABA; }
-            `;
-        this.appendChild(style);
-        
-        //HA Card
-        const card = document.createElement('ha-card');
-        this.card = card;
-        this.appendChild(card);        
-
-        //Build Touchpad and Buttons
-        let buttons = [];
-        let touchpad = document.createElement('div');
-        touchpad.id = 'touchpad';
-        touchpad.className = 'nc-touchpad';
-        card.appendChild(touchpad);
-
-        //Top Buttons
-        buildAndAppendButton('top_button_left', this.config.top_button_left); 
-        buildAndAppendButton('top_button_middle', this.config.top_button_middle); 
-        buildAndAppendButton('top_button_right', this.config.top_button_right); 
-            
-        //Left Buttons
-        buildAndAppendButton('left_button_top', this.config.left_button_top);           
-        buildAndAppendButton('left_button_middle', this.config.left_button_middle);   
-        buildAndAppendButton('left_button_bottom', this.config.left_button_bottom); 
-
-        //Right Buttons
-        buildAndAppendButton('right_button_top', this.config.right_button_top);
-        buildAndAppendButton('right_button_middle', this.config.right_button_middle); 
-        buildAndAppendButton('right_button_bottom', this.config.right_button_bottom); 
-        
-        //Bottom Buttons
-        buildAndAppendButton('bottom_button_left', this.config.bottom_button_left); 
-        buildAndAppendButton('bottom_button_middle', this.config.bottom_button_middle); 
-        buildAndAppendButton('bottom_button_right', this.config.bottom_button_right); 
-        
-        return { touchpad, buttons };
-
-        function buildAndAppendButton(id, button_config) {
-            if(button_config == null) {
-                return;
+                callHassService(hass, e.currentTarget.service, e.currentTarget.service_data);
             }
-            let button = document.createElement('ha-icon-button');
-            button.className = 'nc-button';
-            button.id = id;
-            button.service = button_config.service;
-            button.service_data = button_config.data;
-            button.hold_repeat_enabled = button_config.hold_repeat_enabled | false;
-            button.innerHTML = '<ha-icon icon="' + button_config.icon + '"></ha-icon>';
-            buttons.push(button);
-            touchpad.appendChild(button);
+    
+            //Service Functions
+            function callTwoFingerTouchService(twoFingerConfig) {
+                if(twoFingerConfig) {
+                    callHassService(hass, twoFingerConfig.service, twoFingerConfig.data);
+                }
+            }
+    
+            function callHassService(hass, domain_service , data) {
+                let split = domain_service.split('.');
+                var domain = split[0];
+                var service = split[1];
+                const event = new Event('haptic', {
+                    bubbles: true,
+                    composed: true,
+                });
+                event.detail = 'light';
+                _this.dispatchEvent(event);
+                hass.callService(domain, service, data);
+            }        
         }
     }
 
-    callHassService(hass, domain_service , data) {
-        let split = domain_service.split(".");
-        var domain = split[0];
-        var service = split[1];
-        hass.callService(domain, service, data);
-    }
+    
 
     setConfig(config) {
         if (!config.swipe_left) {
@@ -227,11 +235,9 @@ class NavigationCard extends HTMLElement {
     }
 }
 
-customElements.define("swipe-navigation-card", NavigationCard);
-
 class NavigationCardEditor extends HTMLElement {
     setConfig(config) {
-      this._config = config;
+        this._config = config;
     }
   
     configChanged(newConfig) {
@@ -242,14 +248,14 @@ class NavigationCardEditor extends HTMLElement {
       event.detail = { config: newConfig };
       this.dispatchEvent(event);
     }
-  }
-  
-  customElements.define("swipe-navigation-card-editor", NavigationCardEditor);
-  window.customCards = window.customCards || [];
-  window.customCards.push({
+}
+customElements.define("swipe-navigation-card", NavigationCard);
+customElements.define("swipe-navigation-card-editor", NavigationCardEditor);
+window.customCards = window.customCards || [];
+window.customCards.push({
     type: "swipe-navigation-card",
     name: "Swipe Navigation Card",
     preview: false, // Optional - defaults to false
     description: "A Swipe Navigation Remote Card", // Optional
     documentationURL: "https://github.com/Tjstock/swipe-navigation-card", // Adds a help link in the frontend card editor
-  });
+});
