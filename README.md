@@ -19,10 +19,22 @@ Please let me know of any new features that you would like to have! These action
       - `right_button_top` is the right container's top button which is the volume up button in the example picture.
    - You are not required to configure all of these buttons. If you dont want one of them to appear, just dont add the configuration for it.
 - Ability to repeat actions on button hold. Currently configured to repeat every 250ms. Will add config property if requested.
+- Dynamic Cover art for card background from a `media_player` entity with a `entity_picture` attribute.
 
 
 ## Installation
-This card is only avaiable through github, but I am working on getting it added to HACS. 
+### Installation and tracking with `HACS`
+
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Tjstock&repository=swipe-navigation-card&category=lovelace)
+
+1. Make sure the [HACS](https://github.com/custom-components/hacs) component is installed and working.
+2. Search for `swipe-navigation-card` and add it through HACS
+3. Refresh home-assistant.
+4. Add a manual card configuration to your lovelace dashboard and add the yaml configuration. See the configuration section below for more info.
+
+> Note: If you are using YAML mode for your lovelace configuration, review [these instructions](https://www.home-assistant.io/dashboards/dashboards/#using-yaml-for-the-overview-dashboard) to include external resources.
+
+### Manual
 For a more in depth guide on how to install custom plugins outside of HACS please see this [guide](https://github.com/thomasloven/hass-config/wiki/Lovelace-Plugins).
 
 1. Download the swipe-navigation-card.js file
@@ -68,6 +80,7 @@ For a more in depth guide on how to install custom plugins outside of HACS pleas
 | `size`                 | String              | 48px         | Any Pixel Size                 | Size of the Button                                                                                  |
 | `service`              | String              | **Required** | Any Service                    | Service to call for the button/gesture (e.g. `remote.send_command`, `media_player.volume_up`, etc.) |
 | `data`                 | Service Data Object | **Required** | Any Service Data               | Service data to include for the button/gesture (e.g. `entity_id: media_player.receiver`)            |
+| `background_cover_art` | Background Object | none           | Media Player Entity ID         | Dynamically updates cards background to the media players `entity_picture` attribute if present (e.g. `entity_id: media_player.spotify`)            |
 
 
 ### Example
@@ -193,6 +206,8 @@ right_button_bottom:
   service: media_player.volume_down
   data:
     entity_id: media_player.living_room_tv
+background_cover_art:
+  entity_id: media_player.android_tv
 ```
 ### Love the card?
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/tjstock)
