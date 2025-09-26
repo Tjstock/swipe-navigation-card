@@ -10,15 +10,21 @@ class NavigationCard extends HTMLElement {
         if (!this.card) {
             initializeCard();
         }
+
+        if(this.config.background_cover_art) {
+            setBackgroundCoverArt();
+        }
+        
         
         function initializeCard() {
             //CSS
             const style = document.createElement('style');
             style.textContent = `
+                    #ha-card {}
                     .nc-touchpad { 
                         display: grid; 
                         gap: 20px; 
-                        aspect-ratio: 1; 
+                        aspect-ratio: 1;
                         grid-template-areas: ' .  tbl tbm tbr  . ' 
                                              'lbt  .   .   .  rbt' 
                                              'lbm  .   .   .  rbm'
@@ -196,6 +202,18 @@ class NavigationCard extends HTMLElement {
                 hass.callService(domain, service, data);
             }        
         }
+
+        function setBackgroundCoverArt() {
+            let entity = _this.config.background_cover_art.entity_id;
+            let entityPicture = hass.states[entity]?.attributes?.entity_picture;
+            if(entityPicture) {
+                _this.card.style.backgroundImage = 'url('+ hass.hassUrl(entityPicture) + ')';
+                _this.card.style.backgroundSize = 'cover';
+                _this.card.style.backgroundPosition = 'center';
+            } else {
+                _this.card.style.backgroundImage = '';
+            }
+        }
     }
 
     
@@ -215,6 +233,14 @@ class NavigationCard extends HTMLElement {
         }
         if (!config.tap_action) {
             throw new Error('You need to define tap_action');
+        }
+        if (config.background_cover_art) {
+            if(!config.background_cover_art.entity_id) {
+                throw new Error('You need to define an `entity_id` for `background_cover_art`, or remove this optional configuration');
+            }
+            if(!config.background_cover_art.entity_id.startsWith('media_player.')) {
+                throw new Error('The `entity_id` for `background_cover_art` needs to be a media_player entity');
+            }
         }
 
         this.config = config;
