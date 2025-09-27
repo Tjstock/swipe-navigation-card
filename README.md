@@ -230,12 +230,19 @@ background_cover_art:
     size:
     repeat:
 ```
-Background Cover Art Example Configurations:
+### Background Cover Art Example Configurations:
+
+Basic Media Player Configuration:
+
+![Card Example](/exampleimages/CoverArtExample1.png)
 ```yaml
 background_cover_art:
   entity_id: media_player.spotify
 ```
 
+Custom State Attribute Configuration with CSS:
+
+![Card Example](/exampleimages/CoverArtExample2.png)
 ```yaml
 background_cover_art:
   entity_id: sensor.genius_lyrics_foobar_lyrics
@@ -246,6 +253,9 @@ background_cover_art:
     repeat: no-repeat
 ```
 
+Internal Url Path Configuration with CSS:
+
+![Card Example](/exampleimages/CoverArtExample3.png)
 ```yaml
 background_cover_art:
   internal_url_path: /local/images/my_image.jpg
@@ -255,6 +265,9 @@ background_cover_art:
     repeat: no-repeat
 ```
 
+External Full Url Configuration with CSS:
+
+![Card Example](/exampleimages/CoverArtExample4.png)
 ```yaml
 background_cover_art:
   external_full_url: https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png
