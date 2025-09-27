@@ -204,12 +204,30 @@ class NavigationCard extends HTMLElement {
         }
 
         function setBackgroundCoverArt() {
+            let internalUrlPath = _this.config.background_cover_art.internal_url_path;
+            let externalFullUrl = _this.config.background_cover_art.external_full_url;
             let entity = _this.config.background_cover_art.entity_id;
-            let entityPicture = hass.states[entity]?.attributes?.entity_picture;
-            if(entityPicture) {
-                _this.card.style.backgroundImage = 'url('+ hass.hassUrl(entityPicture) + ')';
-                _this.card.style.backgroundSize = 'cover';
-                _this.card.style.backgroundPosition = 'center';
+            let stateAttributeName = _this.config.background_cover_art.state_attribute_name ? _this.config.background_cover_art.state_attribute_name : 'entity_picture';
+            
+            let backgroundImageUrl = null;
+            if(internalUrlPath) {
+                backgroundImageUrl = hass.hassUrl(internalUrlPath);
+            } else if (externalFullUrl) {
+                backgroundImageUrl = externalFullUrl;
+            } else if (entity){
+                let urlPath = hass.states[entity]?.attributes ? hass.states[entity]?.attributes[stateAttributeName] : null;
+                backgroundImageUrl =  urlPath ? hass.hassUrl(urlPath) : null;
+            }
+         
+
+            if(backgroundImageUrl) {
+                let backgroundPosition = _this.config.background_cover_art.style.position ? _this.config.background_cover_art.style.position : 'center';
+                let backgroundSize = _this.config.background_cover_art.style.size ? _this.config.background_cover_art.style.size : 'cover';
+                let backgroundRepeat = _this.config.background_cover_art.style.repeat ? _this.config.background_cover_art.style.repeat : '';
+                _this.card.style.backgroundImage = 'url('+ backgroundImageUrl + ')';
+                _this.card.style.backgroundSize = backgroundSize
+                _this.card.style.backgroundPosition = backgroundPosition;
+                _this.card.style.backgroundRepeat = backgroundRepeat;
             } else {
                 _this.card.style.backgroundImage = '';
             }
@@ -235,11 +253,19 @@ class NavigationCard extends HTMLElement {
             throw new Error('You need to define tap_action');
         }
         if (config.background_cover_art) {
-            if(!config.background_cover_art.entity_id) {
-                throw new Error('You need to define an `entity_id` for `background_cover_art`, or remove this optional configuration');
+            if(!config.background_cover_art.entity_id && !config.background_cover_art.internal_url_path && !config.background_cover_art.external_full_url) {
+                throw new Error('You need to define either an `entity_id`, `internal_url_path` or `external_full_url` for `background_cover_art`');
             }
-            if(!config.background_cover_art.entity_id.startsWith('media_player.')) {
-                throw new Error('The `entity_id` for `background_cover_art` needs to be a media_player entity');
+            if(config.background_cover_art.entity_id && (config.background_cover_art.internal_url_path || config.background_cover_art.external_full_url)) {
+                throw new Error('You can only define one of the following configs for `background_cover_art`: `entity_id`, `internal_url_path` or `external_full_url`');
+            }
+            if(config.background_cover_art.internal_url_path && config.background_cover_art.external_full_url) {
+                throw new Error('You can only define one of the following configs for `background_cover_art`: `entity_id`, `internal_url_path` or `external_full_url`');
+            }
+            if(config.background_cover_art.entity_id && !config.background_cover_art.entity_id.startsWith('media_player.')) {
+                if(!config.background_cover_art.state_attribute_name) {
+                    throw new Error('The `state_attribute_name` for `background_cover_art` must be defined if an `entity_id` is not a media player entity');
+                }
             }
         }
 
