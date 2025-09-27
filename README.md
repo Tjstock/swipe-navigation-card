@@ -17,9 +17,13 @@ Please let me know of any new features that you would like to have! These action
    - Button location config format is *container*\_button_ *position*.
       - `top_button_middle` is the top container's middle button which is the power button in the example picture.
       - `right_button_top` is the right container's top button which is the volume up button in the example picture.
-   - You are not required to configure all of these buttons. If you dont want one of them to appear, just dont add the configuration for it.
+   - You are not required to configure all of these buttons. If you don't want one of them to appear, just don't add the configuration for it.
 - Ability to repeat actions on button hold. Currently configured to repeat every 250ms. Will add config property if requested.
-- Dynamic Cover art for card background from a `media_player` entity with a `entity_picture` attribute.
+- Dynamic Cover art for card background
+  - From a `media_player` entity with a `entity_picture` attribute
+  - From any entity's custom state attribute
+  - From an internal home assistant URL by providing only the path
+  - From an external URL by providing the full URL with the path
 
 
 ## Installation
@@ -80,7 +84,17 @@ For a more in depth guide on how to install custom plugins outside of HACS pleas
 | `size`                 | String              | 48px         | Any Pixel Size                 | Size of the Button                                                                                  |
 | `service`              | String              | **Required** | Any Service                    | Service to call for the button/gesture (e.g. `remote.send_command`, `media_player.volume_up`, etc.) |
 | `data`                 | Service Data Object | **Required** | Any Service Data               | Service data to include for the button/gesture (e.g. `entity_id: media_player.receiver`)            |
-| `background_cover_art` | Background Object | none           | Media Player Entity ID         | Dynamically updates cards background to the media players `entity_picture` attribute if present (e.g. `entity_id: media_player.spotify`)            |
+| `background_cover_art` | Background Object   | none           | See Example        | Dynamically updates cards background with chosen cover art                                                    |
+| `state_attribute_name` | Background Object Child | `entity_picture`  | See Example           | Dynamically updates cards background with multiple ways to configure image url)                     |
+| `internal_url_path`    | Background Object Child | none              | See Example           | internal_url_path: /local/images/orange_img.png                                                     |
+| `external_full_url`    | Background Object Child | none              | See Example           | external_full_url: https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png             |
+| `style`                | Background Object Child | none              | See Example           | Supports Background Style Configurations: position, size, and repeat.                               |
+| `position`             | Style Object Child      | `center`          | See CSS Documentation | background-position CSS property                                                                    |
+| `size`                 | Style Object Child      | `cover`           | See CSS Documentation | background-size CSS property                                                                        |
+| `repeat`               | Style Object Child      | `repeat`          | See CSS Documentation | background-repeat CSS property                                                                      |
+
+
+
 
 
 ### Example
@@ -207,7 +221,46 @@ right_button_bottom:
   data:
     entity_id: media_player.living_room_tv
 background_cover_art:
-  entity_id: media_player.android_tv
+  entity_id: media_player.spotify
+  state_attribute_name:
+  external_full_url:
+  internal_url_path:
+  style:
+    position:
+    size:
+    repeat:
+```
+Background Cover Art Example Configurations:
+```yaml
+background_cover_art:
+  entity_id: media_player.spotify
+```
+
+```yaml
+background_cover_art:
+  entity_id: sensor.genius_lyrics_foobar_lyrics
+  state_attribute_name: media_image
+  style:
+    position: center
+    size: 50%
+    repeat: no-repeat
+```
+
+```yaml
+background_cover_art:
+  internal_url_path: /local/images/my_image.jpg
+  style:
+    position: center
+    size: 70%
+    repeat: no-repeat
+```
+
+```yaml
+background_cover_art:
+  external_full_url: https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png
+  style:
+    position: top
+    size: 50%
 ```
 ### Love the card?
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/tjstock)
