@@ -221,9 +221,9 @@ class NavigationCard extends HTMLElement {
          
 
             if(backgroundImageUrl) {
-                let backgroundPosition = _this.config.background_cover_art.style.position ? _this.config.background_cover_art.style.position : 'center';
-                let backgroundSize = _this.config.background_cover_art.style.size ? _this.config.background_cover_art.style.size : 'cover';
-                let backgroundRepeat = _this.config.background_cover_art.style.repeat ? _this.config.background_cover_art.style.repeat : '';
+                let backgroundPosition = _this.config.background_cover_art?.style?.position ? _this.config.background_cover_art?.style?.position : 'center';
+                let backgroundSize = _this.config.background_cover_art?.style?.size ? _this.config.background_cover_art?.style?.size : 'cover';
+                let backgroundRepeat = _this.config.background_cover_art?.style?.repeat ? _this.config.background_cover_art?.style?.repeat : '';
                 _this.card.style.backgroundImage = 'url('+ backgroundImageUrl + ')';
                 _this.card.style.backgroundSize = backgroundSize
                 _this.card.style.backgroundPosition = backgroundPosition;
@@ -300,7 +300,184 @@ class NavigationCardEditor extends HTMLElement {
       event.detail = { config: newConfig };
       this.dispatchEvent(event);
     }
+    static getConfigForm() {
+        return {
+        schema: [
+            {
+                name: "haptic",
+                label: "Haptic Feedback",
+                selector: {
+                    select: {
+                    options: ["light", "medium", "heavy", "none"],
+                    mode: "dropdown",
+                    },
+                },
+            },
+            {
+                name: "swipe_left",
+                label: "Swipe Left Action",
+                selector: { action: {} },
+            },
+            {
+                name: "swipe_right",
+                label: "Swipe Right Action",
+                selector: { action: {} },
+            },
+            {
+                name: "swipe_up",
+                label: "Swipe Up Action",
+                selector: { action: {} },
+            },
+            {
+                name: "swipe_down",
+                label: "Swipe Down Action",
+                selector: { action: {} },
+            },
+            {
+                name: "tap_action",
+                label: "Tap Action",
+                selector: { action: {} },
+            },
+            {
+                name: "two_finger_swipe_left",
+                label: "2-Finger Swipe Left",
+                selector: { action: {} },
+            },
+            {
+                name: "two_finger_swipe_right",
+                label: "2-Finger Swipe Right",
+                selector: { action: {} },
+            },
+            {
+                name: "two_finger_swipe_up",
+                label: "2-Finger Swipe Up",
+                selector: { action: {} },
+            },
+            {
+                name: "two_finger_swipe_down",
+                label: "2-Finger Swipe Down",
+                selector: { action: {} },
+            },
+            {
+                type: "grid",
+                name: "buttons",
+                schema: [
+                    {
+                        name: "top_button_left",
+                        label: "Top Button Left",
+                        selector: { action: {} },
+                    },
+                    {
+                        name: "top_button_middle",
+                        label: "Top Button Middle",
+                        selector: { action: {} },
+                    },
+                    {
+                        name: "top_button_right",
+                        label: "Top Button Right",
+                        selector: { action: {} },
+                    },
+                    {
+                        name: "bottom_button_left",
+                        label: "Bottom Button Left",
+                        selector: { action: {} },
+                    },
+                    {
+                        name: "bottom_button_middle",
+                        label: "Bottom Button Middle",
+                        selector: { action: {} },
+                    },
+                    {
+                        name: "bottom_button_right",
+                        label: "Bottom Button Right",
+                        selector: { action: {} },
+                    },
+                    {
+                        name: "left_button_top",
+                        label: "Left Button Top",
+                        selector: { action: {} },
+                    },
+                    {
+                        name: "left_button_middle",
+                        label: "Left Button Middle",
+                        selector: { action: {} },
+                    },
+                    {
+                        name: "left_button_bottom",
+                        label: "Left Button Bottom",
+                        selector: { action: {} },
+                    },
+                    {
+                        name: "right_button_top",
+                        label: "Right Button Top",
+                        selector: { action: {} },
+                    },
+                    {
+                        name: "right_button_middle",
+                        label: "Right Button Middle",
+                        selector: { action: {} },
+                    },
+                    {
+                        name: "right_button_bottom",
+                        label: "Right Button Bottom",
+                        selector: { action: {} },
+                    },
+                ],
+            },
+            {
+                type: "expandable",
+                name: "background_cover_art",
+                label: "Background Cover Art",
+                schema: [
+                    {
+                        name: "entity_id",
+                        label: "Entity",
+                        selector: { entity: {} },
+                    },
+                    {
+                        name: "state_attribute_name",
+                        label: "State Attribute",
+                        selector: { text: {} },
+                    },
+                    {
+                        name: "external_full_url",
+                        label: "External Full URL",
+                        selector: { text: {} },
+                    },
+                    {
+                        name: "internal_url_path",
+                        label: "Internal URL Path",
+                        selector: { text: {} },
+                    },
+                    {
+                        name: "style",
+                        label: "Style (position/size/repeat)",
+                        selector: { object: {} },
+                    },
+                ],
+            },    
+        ],
+        computeLabel: (schema) => {
+            if (schema.name === "internal_url_path") return "Inernal URL Path";
+            return undefined;
+        },
+        computeHelper: (schema) => {
+            switch (schema.name) {
+            case "internal_url_path":
+                return "Internal URL Path (e.g. /local/image.png)";
+            }
+            return undefined;
+        },
+        assertConfig: (config) => {
+            if (config.other_option) {
+            throw new Error("'other_option' is unexpected.");
+            }
+        },
+        };
+    }
+
 }
+
 customElements.define("swipe-navigation-card", NavigationCard);
 customElements.define("swipe-navigation-card-editor", NavigationCardEditor);
 window.customCards = window.customCards || [];
