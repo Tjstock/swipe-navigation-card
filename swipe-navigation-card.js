@@ -221,9 +221,9 @@ class NavigationCard extends HTMLElement {
          
 
             if(backgroundImageUrl) {
-                let backgroundPosition = _this.config.background_cover_art.style.position ? _this.config.background_cover_art.style.position : 'center';
-                let backgroundSize = _this.config.background_cover_art.style.size ? _this.config.background_cover_art.style.size : 'cover';
-                let backgroundRepeat = _this.config.background_cover_art.style.repeat ? _this.config.background_cover_art.style.repeat : '';
+                let backgroundPosition = _this.config.background_cover_art?.style?.position ? _this.config.background_cover_art?.style?.position : 'center';
+                let backgroundSize = _this.config.background_cover_art?.style?.size ? _this.config.background_cover_art?.style?.size : 'cover';
+                let backgroundRepeat = _this.config.background_cover_art?.style?.repeat ? _this.config.background_cover_art?.style?.repeat : '';
                 _this.card.style.backgroundImage = 'url('+ backgroundImageUrl + ')';
                 _this.card.style.backgroundSize = backgroundSize
                 _this.card.style.backgroundPosition = backgroundPosition;
@@ -301,6 +301,7 @@ class NavigationCardEditor extends HTMLElement {
       this.dispatchEvent(event);
     }
 }
+
 customElements.define("swipe-navigation-card", NavigationCard);
 customElements.define("swipe-navigation-card-editor", NavigationCardEditor);
 window.customCards = window.customCards || [];
