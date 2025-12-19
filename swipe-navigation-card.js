@@ -229,7 +229,10 @@ class NavigationCard extends HTMLElement {
                 _this.card.style.setProperty('background-position', backgroundPosition, 'important');
                 _this.card.style.setProperty('background-repeat', backgroundRepeat, 'important');
             } else {
-                _this.card.style.backgroundImage = '';
+                _this.card.style.removeProperty('background-image');
+                _this.card.style.removeProperty('background-size');
+                _this.card.style.removeProperty('background-position');
+                _this.card.style.removeProperty('background-repeat');
             }
         }
     }
@@ -313,3 +316,4 @@ window.customCards.push({
     documentationURL: "https://github.com/Tjstock/swipe-navigation-card", // Adds a help link in the frontend card editor
 
 });
+
