@@ -224,10 +224,10 @@ class NavigationCard extends HTMLElement {
                 let backgroundPosition = _this.config.background_cover_art?.style?.position ? _this.config.background_cover_art?.style?.position : 'center';
                 let backgroundSize = _this.config.background_cover_art?.style?.size ? _this.config.background_cover_art?.style?.size : 'cover';
                 let backgroundRepeat = _this.config.background_cover_art?.style?.repeat ? _this.config.background_cover_art?.style?.repeat : '';
-                _this.card.style.backgroundImage = 'url('+ backgroundImageUrl + ')';
-                _this.card.style.backgroundSize = backgroundSize
-                _this.card.style.backgroundPosition = backgroundPosition;
-                _this.card.style.backgroundRepeat = backgroundRepeat;
+                _this.card.style.setProperty('background-image', 'url(' + backgroundImageUrl + ')', 'important');
+                _this.card.style.setProperty('background-size', backgroundSize, 'important');
+                _this.card.style.setProperty('background-position', backgroundPosition, 'important');
+                _this.card.style.setProperty('background-repeat', backgroundRepeat, 'important');
             } else {
                 _this.card.style.backgroundImage = '';
             }
@@ -311,4 +311,5 @@ window.customCards.push({
     preview: false, // Optional - defaults to false
     description: "A Swipe Navigation Remote Card", // Optional
     documentationURL: "https://github.com/Tjstock/swipe-navigation-card", // Adds a help link in the frontend card editor
+
 });
