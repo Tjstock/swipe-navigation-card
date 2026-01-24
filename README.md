@@ -4,7 +4,7 @@
 # swipe-navigation-card
 A card that allows you to control your media devices by using swipe gestures and buttons.
 
-![Card Example](example-card.png)
+![Card Example](/exampleimages/example-card.png)
 ## Features
 Please let me know of any new features that you would like to have! These actions can be configured to call any service.
 - Swiping anywhere on the center of the card will trigger a left, right, up, or down action based on the direction you swiped.
