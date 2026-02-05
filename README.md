@@ -4,8 +4,8 @@
 <a href="https://buymeacoffee.com/tjstock"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" width="110"/></a>
 <a href="https://buymeabitcoffee.vercel.app/btc/bc1q2arc23vwxccv3yjssymc87ar0cvjycwkahgw57?identifier=Buy+Me+a+BitCoffee&lightning=tstock%40speed.app"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Beer-f7931a?logo=bitcoin&logoColor=white&color=f7931a&style=flat" alt="Buy Me a BitCoffee badge" width="125"/></a>
 
-# swipe-navigation-card
-A card that allows you to control your media devices by using swipe gestures and buttons.
+# Swipe Navigation Card
+A card that allows you to control your media devices and/or any other device types by using swipe gestures and buttons.
 
 ![Card Example](/exampleimages/example-card.png)
 ## Features
