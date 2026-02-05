@@ -12,7 +12,7 @@ class NavigationCard extends HTMLElement {
         }
 
         //TODO: add support for visual swipe of background like legende showed in https://github.com/Tjstock/swipe-navigation-card/issues/5 
-        if(this.config.background_cover_art) {
+        if(this.config.background_cover_art && Object.keys(this.config.background_cover_art).length != 0) {
             setBackgroundCoverArt();
         }
         
@@ -309,7 +309,7 @@ class NavigationCard extends HTMLElement {
             if(backgroundImageUrl) {
                 const backgroundPosition = _this.config.background_cover_art?.background_css_config?.position ? _this.config.background_cover_art?.background_css_config?.position : 'center';
                 const backgroundSize = _this.config.background_cover_art?.background_css_config?.size ? _this.config.background_cover_art?.background_css_config?.size : 'cover';
-                const backgroundRepeat = _this.config.background_cover_art?.background_css_config?.repeat ? _this.config.background_cover_art?.background_css_config?.repeat : '';
+                const backgroundRepeat = _this.config.background_cover_art?.background_css_config?.repeat ? _this.config.background_cover_art?.background_css_config?.repeat : 'no-repeat';
                 const lightenDarkenPercent = _this.config.background_cover_art?.background_css_config?.lighten_darken;
                 _this.card.style.setProperty('background-image', 'url(' + backgroundImageUrl + ')', 'important');
                 _this.card.style.setProperty('background-size', backgroundSize, 'important');
@@ -384,14 +384,14 @@ class NavigationCard extends HTMLElement {
         
         return {
             schema: [
-                { type: "expandable", name: "swipe_actions", label: "Swipe Actions", schema: [
-                    { type: "expandable", name: "one_finger", label: "One Finger Gestures", schema: [
+                { type: "expandable", name: "swipe_actions", label: "Swipe Gestures", schema: [
+                    { type: "expandable", name: "one_finger", label: "One Finger", schema: [
                         { type: "expandable", name: "swipe_left", label: "Swipe Left Action", schema: [tap_action] },
                         { type: "expandable", name: "swipe_right", label: "Swipe Right Action",schema: [tap_action] },
                         { type: "expandable", name: "swipe_up", label: "Swipe Up Action", schema: [tap_action] },
                         { type: "expandable", name: "swipe_down", label: "Swipe Down Action", schema: [tap_action] },
                     ]},
-                    { type: "expandable", name: "two_finger", label: "Two Finger Gestures", schema: [
+                    { type: "expandable", name: "two_finger", label: "Two Finger", schema: [
                         { type: "expandable", name: "swipe_left", label: "Swipe Left Action", schema: [tap_action] },
                         { type: "expandable", name: "swipe_right", label: "Swipe Right Action", schema: [tap_action] },
                         { type: "expandable", name: "swipe_up", label: "Swipe Up Action", schema: [tap_action] },
@@ -428,9 +428,9 @@ class NavigationCard extends HTMLElement {
                     { name: "internal_url_path", label: "Internal URL Path", selector: { text: {} } },
                     { type: "expandable", name: "background_css_config", label: "Background CSS Config", schema: [
                         { type: "grid", name: "background_css_grid", flatten: true, schema: [
-                                { name: "size", label: "Size (e.g. cover, 50%)", selector: { text: {} } },
-                                { name: "position", label: "Position (e.g. center, top)", selector: { text: {} } },
-                                { name: "repeat", label: "Repeat (e.g. no-repeat)", selector: { text: {} } },
+                                { name: "size", label: "Size (e.g. cover, 50%)", default: "cover", selector: { text: {} } },
+                                { name: "position", label: "Position (e.g. center, top)", default: "center", selector: { text: {} } },
+                                { name: "repeat", label: "Repeat (e.g. no-repeat)", default: "no-repeat", selector: { text: {} } },
                                 { name: "lighten_darken", label: "Lighten/Darken", default: 0, selector: { number: { min: -100, max: 100, step: "any", unit_of_measurement: "%" } } },
                                 
                         ]}
@@ -480,10 +480,7 @@ class NavigationCard extends HTMLElement {
     }
     static assertConfiguration(config) {
         /** Background Cover Art */
-        if (config.background_cover_art) {
-            if(!config.background_cover_art.entity && !config.background_cover_art.internal_url_path && !config.background_cover_art.external_full_url) {
-                throw new Error('You need to define either an `entity`, `internal_url_path` or `external_full_url` for `background_cover_art`, or remove the config entirely in code editor');
-            }
+        if (config.background_cover_art && Object.keys(config.background_cover_art).length != 0) {
             if((config.background_cover_art.internal_url_path && config.background_cover_art.external_full_url) 
                     || config.background_cover_art.entity && (config.background_cover_art.internal_url_path || config.background_cover_art.external_full_url)) {
                 throw new Error('You can only define one of the following configs for `background_cover_art`: `entity`, `internal_url_path` or `external_full_url`');
@@ -496,32 +493,13 @@ class NavigationCard extends HTMLElement {
         }
 
         /** Repeat Delay */
-        //Top Button
-        this.holdRepeatValidation(config.button_actions?.top_button_left?.hold_repeat_ms);
-        this.holdRepeatValidation(config.button_actions?.top_button_middle?.hold_repeat_ms);
-        this.holdRepeatValidation(config.button_actions?.top_button_right?.hold_repeat_ms);
-        //Bottom Bottons
-        this.holdRepeatValidation(config.button_actions?.bottom_button_left?.hold_repeat_ms);
-        this.holdRepeatValidation(config.button_actions?.bottom_button_middle?.hold_repeat_ms);
-        this.holdRepeatValidation(config.button_actions?.bottom_button_right?.hold_repeat_ms);
-        //Left Buttons
-        this.holdRepeatValidation(config.button_actions?.left_button_top?.hold_repeat_ms);
-        this.holdRepeatValidation(config.button_actions?.left_button_middle?.hold_repeat_ms);
-        this.holdRepeatValidation(config.button_actions?.left_button_bottom?.hold_repeat_ms);
-        //Right Buttons
-        this.holdRepeatValidation(config.button_actions?.right_button_top?.hold_repeat_ms);
-        this.holdRepeatValidation(config.button_actions?.right_button_middle?.hold_repeat_ms);
-        this.holdRepeatValidation(config.button_actions?.right_button_bottom?.hold_repeat_ms);
-        //Corner Buttons
-        this.holdRepeatValidation(config.button_actions?.corner_button_top_left?.hold_repeat_ms);
-        this.holdRepeatValidation(config.button_actions?.corner_button_top_right?.hold_repeat_ms);
-        this.holdRepeatValidation(config.button_actions?.corner_button_bottom_left?.hold_repeat_ms);
-        this.holdRepeatValidation(config.button_actions?.corner_button_bottom_right?.hold_repeat_ms);
-    }
-
-    static holdRepeatValidation(hold_repeat_ms) {
-        if((hold_repeat_ms || hold_repeat_ms == 0) && (hold_repeat_ms < 100 || hold_repeat_ms > 2000)) {
-            throw new Error("Hold Repeat Delay not in range of 100-2000 milliseconds.");
+        if (config.button_actions) {
+            Object.values(config.button_actions).forEach(button => {
+                const hold_repeat_ms = button?.hold_repeat_ms;
+                if((hold_repeat_ms || hold_repeat_ms == 0) && (hold_repeat_ms < 100 || hold_repeat_ms > 2000)) {
+                    throw new Error("Hold Repeat Delay not in range of 100-2000 milliseconds.");
+                }
+            });
         }
     }
 }
