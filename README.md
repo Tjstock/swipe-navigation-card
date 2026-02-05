@@ -6,25 +6,37 @@ A card that allows you to control your media devices by using swipe gestures and
 
 ![Card Example](/exampleimages/example-card.png)
 ## Features
-Please let me know of any new features that you would like to have! These actions can be configured to call any service.
+#### Swipe Gestures
+One-finger and two-finger swipe gesture support!
+- Can call any Home Assistant action
 - Swiping anywhere on the center of the card will trigger a left, right, up, or down action based on the direction you swiped.
-   - Swiping from right to left triggers the `swipe_left` action.
-   - Swiping from left to right triggers the `swipe_right` action.
-   - Swiping from top to bottom triggers the `swipe_down` action.
-   - Swiping from bottom to top triggers the `swipe_up` action.
-- Clicking anywhere on the center of the card will trigger the `tap action` which I use as the 'A', 'OK', or 'Select' buttons.
-- 12 configurable Buttons that can be used for 'Power', 'Menu', 'Rewind', 'Play/Pause', 'Fast Forward', 'Volume Up', 'Volume Down', 'Volume Mute', etc.
-   - Button location config format is *container*\_button_ *position*.
-      - `top_button_middle` is the top container's middle button which is the power button in the example picture.
-      - `right_button_top` is the right container's top button which is the volume up button in the example picture.
-   - You are not required to configure all of these buttons. If you don't want one of them to appear, just don't add the configuration for it.
-- Ability to repeat actions on button hold. Currently configured to repeat every 250ms. Will add config property if requested.
+   - Swiping from right to left calls the `Swipe Left Action`.
+   - Swiping from left to right calls the `Swipe Right Action`.
+   - Swiping from top to bottom calls the `Swipe Down Action`.
+   - Swiping from bottom to top calls the `Swipe Up Action`.
+
+#### Center Tap Action
+Clicking anywhere on the center of the card will call the `Touchpad Tap Action`. This does not support any button design configurations or hold behavior actions.
+- Can call any Home Assistant action
+
+#### Buttons
+Has 16 configurable buttons
+- Can call any Home Assistant action
+- Ability to add both a tap behavior and hold behavior action
+- Ability to repeat an action on button hold with custom `Hold repeat delay` between 100 and 2000 milliseconds.
+- Buttons can be positioned anywhere on the card using the `Vertical adjustment` and `Horizontal adjustment` configs, but default to the outer edges.
+- Button location config format is *container*\_button_ *position*.
+   - `Top Button (Middle)` is the top _container's_ middle button, which is the power button in the example picture.
+   - `Right Button (Top)` is the right _container's_ top button, which is the volume up button in the example picture.   
+
+#### Background Cover Art
 - Dynamic Cover art for card background
   - From a `media_player` entity with a `entity_picture` attribute
   - From any entity's custom state attribute
   - From an internal home assistant URL by providing only the path
   - From an external URL by providing the full URL with the path
 
+Feel free to submit feature requests and I will do my best to work on them!
 
 ## Installation
 ### Installation and tracking with `HACS`
@@ -54,6 +66,9 @@ For a more in depth guide on how to install custom plugins outside of HACS pleas
 4. Add a manual card configuration to your lovelace dashboard and add the yaml configuration. See the configuration section below for more info.
 
 ## Configuration
+⭐Now has a fully functional graphical editor with layout sizing support!⭐
+
+
 | Name                   | Type                | Default      | Supported options              | Description                                                                                         |
 |------------------------|---------------------|--------------|--------------------------------|-----------------------------------------------------------------------------------------------------|
 | `type`                 | String              | **Required** | `custom:swipe-navigation-card` | Type of the card                                                                                    |
@@ -98,7 +113,6 @@ For a more in depth guide on how to install custom plugins outside of HACS pleas
 
 
 ### Example
-Currently, the `tap action` and all `swipe action` configurations are required, but I will remove this requirement if requested.
 
 ```yaml
 type: custom:swipe-navigation-card
@@ -253,27 +267,16 @@ background_cover_art:
     repeat: no-repeat
 ```
 
-Internal Url Path Configuration with CSS:
-
-![Card Example](/exampleimages/CoverArtExample3.png)
+Internal Url Path Configuration:
 ```yaml
 background_cover_art:
   internal_url_path: /local/images/my_image.jpg
-  style:
-    position: center
-    size: 70%
-    repeat: no-repeat
 ```
 
-External Full Url Configuration with CSS:
-
-![Card Example](/exampleimages/CoverArtExample4.png)
+External Full Url Configuration:
 ```yaml
 background_cover_art:
   external_full_url: https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png
-  style:
-    position: top
-    size: 50%
 ```
 ### Love the card?
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/tjstock)
