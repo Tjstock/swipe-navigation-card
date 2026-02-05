@@ -69,7 +69,8 @@ For a more in depth guide on how to install custom plugins outside of HACS pleas
 ## Configuration
 ⭐Now has a fully functional graphical editor with layout sizing support!⭐
 
-### Swipe Actions
+### Swipe Gestures
+![Card Example](/exampleimages/SwipeGesturesConfig.png)
 | Name                   | Type                | Default      | Supported options              | Description                                                                                         |
 |------------------------|---------------------|--------------|--------------------------------|-----------------------------------------------------------------------------------------------------|
 | `swip_actions`         | Object              | none         | See Example                    | Parent Object for all swipe actions                                                                 |
@@ -106,8 +107,8 @@ swipe_actions:
           command: VolumeUp
 ```
 
-### Button Actions
-
+### Buttons
+![Card Example](/exampleimages/ButtonsConfig.png)
 | Name                        | Type                | Default      | Supported options              | Description                                                                                         |
 |-----------------------------|---------------------|--------------|--------------------------------|-----------------------------------------------------------------------------------------------------|
 | `default_icon_size`         | Number              | none         | Any Positive Number            | Default size of all the buttons. If not set icons will autosize as card layout size changes         |
@@ -199,6 +200,7 @@ button_actions:
 ```
 
 ### Background Cover Art
+![Card Example](/exampleimages/CoverArtConfig.png)
 | Name                        | Type     | Default           | Supported options     | Description                                                                                         |
 |-----------------------------|----------|-------------------|-----------------------|-----------------------------------------------------------------------------------------------------|
 | `background_cover_art`      | Object   | none              | See Example           | Dynamically updates cards background with chosen cover art                                          |
