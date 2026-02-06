@@ -1,30 +1,51 @@
 [!["GitHub Release"](https://img.shields.io/github/v/release/tjstock/swipe-navigation-card.svg?style=for-the-badge)](https://github.com/Tjstock/swipe-navigation-card/releases)
 [!["Community Forum"](https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge)](https://community.home-assistant.io/t/swipe-navigation-remote-card/729641)
 
-# swipe-navigation-card
-A card that allows you to control your media devices by using swipe gestures and buttons.
+<a href="https://buymeacoffee.com/tjstock"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" width="110"/></a>
+<a href="https://buymeabitcoffee.vercel.app/btc/bc1q2arc23vwxccv3yjssymc87ar0cvjycwkahgw57?identifier=Buy+Me+a+BitCoffee&lightning=tstock%40speed.app"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Beer-f7931a?logo=bitcoin&logoColor=white&color=f7931a&style=flat" alt="Buy Me a BitCoffee badge" width="125"/></a>
 
-![Card Example](example-card.png)
+# Swipe Navigation Card
+A card that allows you to control your media devices and/or any other entity types by using swipe gestures and buttons. This card supports any `tap` and `hold` [Home Assistant action](https://www.home-assistant.io/dashboards/actions/).
+
+<img src="/exampleimages/example-card.png" width="250" alt="Card Example"> <img src="/exampleimages/CoverArtExample1.png" width="250" alt="Cover Art Example">
+
+#### ⭐Popup Tip
+Want to configure one of your buttons to open up a popup of apps to select? Look into using the pop-up feature of thomasloven's [hass-browser_mod](https://github.com/thomasloven/hass-browser_mod?tab=readme-ov-file#popup-card) and trigger it using the more-info behaviour for the chosen entity! Clooos's [Bubble-Card](https://github.com/Clooos/Bubble-Card?tab=readme-ov-file#pop-up) is also a good alternative.
+
+<img src="/exampleimages/AppSelector.png" width="250" alt="App Selector Example">
+
 ## Features
-Please let me know of any new features that you would like to have! These actions can be configured to call any service.
-- Swiping anywhere on the center of the card will trigger a left, right, up, or down action based on the direction you swiped.
-   - Swiping from right to left triggers the `swipe_left` action.
-   - Swiping from left to right triggers the `swipe_right` action.
-   - Swiping from top to bottom triggers the `swipe_down` action.
-   - Swiping from bottom to top triggers the `swipe_up` action.
-- Clicking anywhere on the center of the card will trigger the `tap action` which I use as the 'A', 'OK', or 'Select' buttons.
-- 12 configurable Buttons that can be used for 'Power', 'Menu', 'Rewind', 'Play/Pause', 'Fast Forward', 'Volume Up', 'Volume Down', 'Volume Mute', etc.
-   - Button location config format is *container*\_button_ *position*.
-      - `top_button_middle` is the top container's middle button which is the power button in the example picture.
-      - `right_button_top` is the right container's top button which is the volume up button in the example picture.
-   - You are not required to configure all of these buttons. If you don't want one of them to appear, just don't add the configuration for it.
-- Ability to repeat actions on button hold. Currently configured to repeat every 250ms. Will add config property if requested.
-- Dynamic Cover art for card background
-  - From a `media_player` entity with a `entity_picture` attribute
-  - From any entity's custom state attribute
-  - From an internal home assistant URL by providing only the path
-  - From an external URL by providing the full URL with the path
+##### _➕ Don't see a feature you want added? Create an issue with an enhancement label, and I will do my best to implement it!_
 
+
+### Swipe Gestures
+One-finger and two-finger swipe gesture support that can call any `tap` and `hold` [Home Assistant action](https://www.home-assistant.io/dashboards/actions/).
+- Swiping anywhere on the center of the card will trigger a left, right, up, or down action based on the direction you swiped
+   - Swiping from right to left calls the defined `Swipe Left Action`
+   - Swiping from left to right calls the defined `Swipe Right Action`
+   - Swiping from top to bottom calls the defined `Swipe Down Action`
+   - Swiping from bottom to top calls the defined `Swipe Up Action`
+
+### Center Tap Action
+Tapping anywhere on the card that is not a button will call the defined `Touchpad Tap Action`; any `tap` [Home Assistant action](https://www.home-assistant.io/dashboards/actions/) is supported.  At this time, this does not support any button design configurations or hold behavior actions.
+
+### Buttons
+16 configurable buttons that can call any `tap` and `hold` [Home Assistant action](https://www.home-assistant.io/dashboards/actions/).
+- Ability to add both a tap behavior and hold behavior action
+- Ability to repeat an action on button hold with custom `Hold repeat delay` between 100 and 2000 milliseconds
+- Buttons can be positioned anywhere on the card using the `Vertical adjustment` and `Horizontal adjustment` configs, but default to the outer edges
+- Button location config format is *container*\_button_ *position*
+   - `Top Button (Middle)` is the top _container's_ middle button, which is the power button in the example picture
+   - `Right Button (Top)` is the right _container's_ top button, which is the volume up button in the example picture
+   - `Corner Button (Top Right)` is the corner _container's_ top left button, which would be above the volume up button in the example picture 
+
+### Background Cover Art
+Dynamic or static cover art for the card background.
+- From a `media_player` entity with a `entity_picture` attribute
+- From any entity's custom state attribute
+- From an internal home assistant URL by providing only the path
+- From an external URL by providing the full URL with the path
+- Change CSS properties background-size, background-position, background-repeat, as well as lighten or darken the image to make buttons easier to see
 
 ## Installation
 ### Installation and tracking with `HACS`
@@ -54,226 +75,187 @@ For a more in depth guide on how to install custom plugins outside of HACS pleas
 4. Add a manual card configuration to your lovelace dashboard and add the yaml configuration. See the configuration section below for more info.
 
 ## Configuration
+⭐Now has a fully functional graphical editor with section layout sizing support!⭐
+
+### Swipe Gestures
+<img src="/exampleimages/SwipeGesturesConfig.png" width="250" alt="Swipe Gestures Config">
+
 | Name                   | Type                | Default      | Supported options              | Description                                                                                         |
 |------------------------|---------------------|--------------|--------------------------------|-----------------------------------------------------------------------------------------------------|
-| `type`                 | String              | **Required** | `custom:swipe-navigation-card` | Type of the card                                                                                    |
-| `swipe_left`           | Swipe Object        | **Required** | See Example                    | Object to define the action for left swipe gesture                                                  |
-| `swipe_right`          | Swipe Object        | **Required** | See Example                    | Object to define the action for right swipe gesture                                                 |
-| `swipe_up`             | Swipe Object        | **Required** | See Example                    | Object to define the action for up swipe gesture                                                    |
-| `swipe_down`           | Swipe Object        | **Required** | See Example                    | Object to define the action for down swipe gesture                                                  |
-| `two_finger_swipe_left`| Swipe Object        | none         | See Example                    | Object to define the action for two finger left swipe gesture                                       |
-| `two_finger_swipe_right`| Swipe Object       | none         | See Example                    | Object to define the action for two finger right swipe gesture                                      |
-| `two_finger_swipe_up`  | Swipe Object        | none         | See Example                    | Object to define the action for two finger up swipe gesture                                         |
-| `two_finger_swipe_down`| Swipe Object        | none         | See Example                    | Object to define the action for two finger down swipe gesture                                       |
-| `tap_action`           | Tap Object          | **Required** | See Example                    | Defines what action to take when you tap the card anywhere there is not a button                    |
-| `top_button_left`      | Button Object       | none         | See Example                    | Object to define the action for the top left button                                                 |
-| `top_button_middle`    | Button Object       | none         | See Example                    | Object to define the action for the top middle button                                               |
-| `top_button_right`     | Button Object       | none         | See Example                    | Object to define the action for the top right button                                                |
-| `bottom_button_left`   | Button Object       | none         | See Example                    | Object to define the action for the bottom left button                                              |
-| `bottom_button_middle` | Button Object       | none         | See Example                    | Object to define the action for the bottom middle button                                            |
-| `bottom_button_right`  | Button Object       | none         | See Example                    | Object to define the action for the bottom right button                                             |
-| `left_button_top`      | Button Object       | none         | See Example                    | Object to define the action for the left top button                                                 |
-| `left_button_middle`   | Button Object       | none         | See Example                    | Object to define the action for the left middle button                                              |
-| `left_button_bottom`   | Button Object       | none         | See Example                    | Object to define the action for the left bottom button                                              |
-| `right_button_top`     | Button Object       | none         | See Example                    | Object to define the action for the right top button                                                |
-| `right_button_middle`  | Button Object       | none         | See Example                    | Object to define the action for the right middle button                                             |
-| `right_button_bottom`  | Button Object       | none         | See Example                    | Object to define the action for the right bottom button                                             |
-| `hold_repeat_enabled`  | Boolean             | false        | `true` or `false`              | Defines if the hold action should be enabled for a Button Object                                    |
-| `icon`                 | String              | none         | Any MDI                        | MDI to set for the Button                                                                           |
-| `color`                | String              | none         | Any CSS color                  | Color of the Button                                                                                 |
-| `size`                 | String              | 48px         | Any Pixel Size                 | Size of the Button                                                                                  |
-| `service`              | String              | **Required** | Any Service                    | Service to call for the button/gesture (e.g. `remote.send_command`, `media_player.volume_up`, etc.) |
-| `data`                 | Service Data Object | **Required** | Any Service Data               | Service data to include for the button/gesture (e.g. `entity_id: media_player.receiver`)            |
-| `background_cover_art` | Background Object   | none           | See Example        | Dynamically updates cards background with chosen cover art                                                    |
-| `state_attribute_name` | Background Object Child | `entity_picture`  | See Example           | Dynamically updates cards background with multiple ways to configure image url)                     |
-| `internal_url_path`    | Background Object Child | none              | See Example           | internal_url_path: /local/images/orange_img.png                                                     |
-| `external_full_url`    | Background Object Child | none              | See Example           | external_full_url: https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png             |
-| `style`                | Background Object Child | none              | See Example           | Supports Background Style Configurations: position, size, and repeat.                               |
-| `position`             | Style Object Child      | `center`          | See CSS Documentation | background-position CSS property                                                                    |
-| `size`                 | Style Object Child      | `cover`           | See CSS Documentation | background-size CSS property                                                                        |
-| `repeat`               | Style Object Child      | `repeat`          | See CSS Documentation | background-repeat CSS property                                                                      |
-
-
-
-
-
-### Example
-Currently, the `tap action` and all `swipe action` configurations are required, but I will remove this requirement if requested.
+| `swip_actions`         | Object              | none         | See Example                    | Parent Object for all swipe actions                                                                 |
+| `one_finger`           | Object              | none         | See Example                    | Object to define the one-finger swipe left, right, up, down actions                                 |
+| `two_finger`           | Object              | none         | See Example                    | Object to define the two-finger swipe left, right, up, down actions                                 |
+| `tap_action`           | Object              | none         | See Example                    | Object to define the tap behaviour action (but really for a swipe action in this case)              |
+| `tap_entity`           | String              | none         | Any Entity ID                  | If using the 'Toggle' or 'More info' behavior for a tap action, this field is required. For all other behaviors, leave this blank. |
+| `swipe_left`           | Object              | none         | See Example                    | Object to define the action for left swipe gesture                                                  |
+| `swipe_right`          | Object              | none         | See Example                    | Object to define the action for right swipe gesture                                                 |
+| `swipe_up`             | Object              | none         | See Example                    | Object to define the action for up swipe gesture                                                    |
+| `swipe_down`           | Object              | none         | See Example                    | Object to define the action for down swipe gesture                                                  |
 
 ```yaml
 type: custom:swipe-navigation-card
-haptic: light
-swipe_left:
-  service: webostv.button
-  data:
-    entity_id: media_player.living_room_tv
-    button: LEFT
-swipe_right:
-  service: webostv.button
-  data:
-    entity_id: media_player.living_room_tv
-    button: RIGHT
-swipe_up:
-  service: webostv.button
-  data:
-    entity_id: media_player.living_room_tv
-    button: UP
-swipe_down:
-  service: webostv.button
-  data:
-    entity_id: media_player.living_room_tv
-    button: DOWN
-tap_action:
-  service: webostv.button
-  data:
-    entity_id: media_player.living_room_tv
-    button: ENTER
-two_finger_swipe_left:
-  service: webostv.button
-  data:
-    entity_id: media_player.living_room_tv
-    button: BACK
-two_finger_swipe_right:
-  service: media_player.media_play_pause
-  data:
-    entity_id: media_player.living_room_tv
-two_finger_swipe_up:
-  service: media_player.volume_up
-  data:
-    entity_id: media_player.living_room_tv
-two_finger_swipe_down:
-  service: media_player.volume_down
-  data:
-    entity_id: media_player.living_room_tv
-top_button_left:
-  icon: mdi:menu
-  service: webostv.button
-  data:
-    entity_id: media_player.living_room_tv
-    button: MENU
-top_button_middle:
-  icon: mdi:power
-  service: media_player.toggle
-  data:
-    entity_id: media_player.living_room_tv
-top_button_right:
-  icon: mdi:apps
-  service: androidtv.adb_command
-  data:
-    entity_id: media_player.android_tv
-    command: HOME
-bottom_button_left:
-  icon: mdi:rewind
-  color: '#BABABA'
-  service: androidtv.adb_command
-  data:
-    entity_id: media_player.android_tv
-    command: REWIND
-bottom_button_middle:
-  icon: mdi:play-pause
-  service: media_player.media_play_pause
-  data:
-    entity_id: media_player.living_room_tv
-bottom_button_right:
-  icon: mdi:fast-forward
-  color: '#BABABA'
-  service: androidtv.adb_command
-  data:
-    entity_id: media_player.android_tv
-    command: FAST_FORWARD
-left_button_top:
-  icon: mdi:arrow-left
-  service: webostv.button
-  data:
-    entity_id: media_player.living_room_tv
-    button: BACK
-left_button_middle:
-  icon: mdi:netflix
-  color: '#E50914'
-  service: media_player.select_source
-  data:
-    source: Netflix
-    entity_id: media_player.android_tv
-left_button_bottom:
-  icon: mdi:hulu
-  color: '#66aa33'
-  service: media_player.select_source
-  data:
-    source: Hulu
-    entity_id: media_player.android_tv
-right_button_top:
-  icon: mdi:volume-plus
-  service: media_player.volume_up
-  hold_repeat_enabled: true
-  data:
-    entity_id: media_player.living_room_tv
-right_button_middle:
-  icon: mdi:volume-mute
-  color: red
-  service: webostv.button
-  data:
-    entity_id: media_player.living_room_tv
-    button: MUTE
-right_button_bottom:
-  icon: mdi:volume-minus
-  hold_repeat_enabled: true
-  service: media_player.volume_down
-  data:
-    entity_id: media_player.living_room_tv
-background_cover_art:
-  entity_id: media_player.spotify
-  state_attribute_name:
-  external_full_url:
-  internal_url_path:
-  style:
-    position:
-    size:
-    repeat:
-```
-### Background Cover Art Example Configurations:
-
-Basic Media Player Configuration:
-
-![Card Example](/exampleimages/CoverArtExample1.png)
-```yaml
-background_cover_art:
-  entity_id: media_player.spotify
+swipe_actions:
+  one_finger:
+    swipe_left:
+      tap_action:
+        action: perform-action
+        perform_action: remote.send_command
+        target:
+          entity_id: remote.harmony_hub
+        data:
+          device: Xbox
+          command: DirectionLeft
+  two_finger:
+    swipe_up:
+      tap_action:
+        action: perform-action
+        perform_action: remote.send_command
+        target:
+          entity_id: remote.harmony_hub
+        data:
+          device: Receiver
+          command: VolumeUp
 ```
 
-Custom State Attribute Configuration with CSS:
+### Buttons
+<img src="/exampleimages/ButtonsConfig.png" width="250" alt="Buttons Config">
 
-![Card Example](/exampleimages/CoverArtExample2.png)
+| Name                        | Type                | Default      | Supported options              | Description                                                                                         |
+|-----------------------------|---------------------|--------------|--------------------------------|-----------------------------------------------------------------------------------------------------|
+| `default_icon_size`         | Number              | none         | Any Positive Number            | Default size of all the buttons. If not set, icons will autosize as card layout size changes        |
+| `grid_gap`                  | Number              | none / 0     | Any Positive Number            | Pushes the buttons closer to the cards edge                                                         |
+| `touchpad_tap_action`       | Object              | none         | See Example                    | Object to define what action to take when you tap the card anywhere there is not a button           |
+| `top_button_left`           | Object              | none         | See Example                    | Object to define the action for the top container left button                                       |
+| `top_button_middle`         | Object              | none         | See Example                    | Object to define the action for the top container middle button                                     |
+| `top_button_right`          | Object              | none         | See Example                    | Object to define the action for the top container right button                                      |
+| `bottom_button_left`        | Object              | none         | See Example                    | Object to define the action for the bottom container left button                                    |
+| `bottom_button_middle`      | Object              | none         | See Example                    | Object to define the action for the bottom container middle button                                  |
+| `bottom_button_right`       | Object              | none         | See Example                    | Object to define the action for the bottom container right button                                   |
+| `left_button_top`           | Object              | none         | See Example                    | Object to define the action for the left container top button                                       |
+| `left_button_middle`        | Object              | none         | See Example                    | Object to define the action for the left container middle button                                    |
+| `left_button_bottom`        | Object              | none         | See Example                    | Object to define the action for the left container bottom button                                    |
+| `right_button_top`          | Object              | none         | See Example                    | Object to define the action for the right container top button                                      |
+| `right_button_middle`       | Object              | none         | See Example                    | Object to define the action for the right container middle button                                   |
+| `right_button_bottom`       | Object              | none         | See Example                    | Object to define the action for the right container bottom button                                   |
+| `corner_button_top_left`    | Object              | none         | See Example                    | Object to define the action for the corner top left button                                          |
+| `corner_button_top_right`   | Object              | none         | See Example                    | Object to define the action for the corner top right button                                         |
+| `corner_button_bottom_left` | Object              | none         | See Example                    | Object to define the action for the corner bottom left                                              |
+| `corner_button_bottom_right`| Object              | none         | See Example                    | Object to define the action for the corner bottom right button                                      |
+| `tap_action`                | Object              | none         | See Example                    | Object to define the tap behaviour action                                                           |
+| `hold_action`               | Object              | none         | See Example                    | Object to define the hold behaviour action<br><br> _*Not supported for touchpad_tap_action_              |
+| `hold_repeat_ms`            | Number              | none         | 100 - 2000                     | Delay in milliseconds between repeat actions upon holding the button.<br><br> A Hold action behavior of 'Nothing' will use the configured Tap action if this value is set, otherwise it will use the Hold action defined<br><br> _Configuring the 'Repeats', 'Delay Seconds', or 'Hold Seconds' config for a remote action may create unintended functionality if this config is also set<br><br>*Not supported for touchpad_tap_action_|
+| `icon`                      | String              | none         | Any MDI                        | MDI to set for the Button                                                                           |
+| `icon_color`                | String              | none         | Any CSS color (RGB list)       | Color of the Button                                                                                 |
+| `icon_size`                 | Number              | none         | Any Positive Number            | Overide default size for the individual button                                                      |
+| `vertical_adjustment`       | String              | none / 0     | Any Number                     | Vertically adjust the individual button on the card                                                 |
+| `horizontal_adjustment`     | Number              | none / 0     | Any Number                     | Horizontally adjust the individual button on the card                                               |
+| `tap_entity`                | String              | none         | Any Entity ID                  | If using the 'Toggle' or 'More info' behavior for a tap action, this field is required. For all other behaviors, leave this blank. |
+| `hold_entity`               | String              | none         | Any Entity ID                  | If using the 'Toggle' or 'More info' behavior for a hold action, this field is required. For all other behaviors, leave this blank.|
+
 ```yaml
+type: custom:swipe-navigation-card
+button_actions:
+  grid_gap: 25
+  default_icon_size: 50
+  touchpad_tap_action:
+    tap_action:
+      action: perform-action
+      perform_action: remote.send_command
+      target:
+        entity_id: remote. harmony_hub
+      data:
+        device: Xbox
+        command: OK
+  top_button_right:
+    icon: mdi:microsoft-xbox-controller-menu
+    icon_color:
+      - 236
+      - 219
+      - 51
+    icon_size: 48
+    vertical_adjustment: -25
+    horizontal_adjustment: 40
+    tap_action:
+      action: perform-action
+      perform_action: remote.send_command
+      target:
+        entity_id: remote.harmony_hub
+      data:
+        device: Xbox
+        command: Menu
+    hold_action:
+      action: more-info
+    hold_entity: switch.harmony_activity_xbox
+  right_button_top:
+    icon: mdi:volume-plus
+    tap_action:
+      action: perform-action
+      perform_action: remote.send_command
+      target:
+        entity_id: remote.harmony_hub
+      data:
+        device: Receiver
+        command: VolumeUp
+    hold_repeat_ms: 250
+  right_button_top:
+    icon: mdi:volume-plus
+    hold_repeat_ms: 250
+    hold_action:
+      action: perform-action
+      perform_action: remote.send_command
+      target:
+        entity_id: remote.harmony_hub
+      data:
+        device: Receiver
+        command: VolumeUp
+```
+
+### Background Cover Art
+<img src="/exampleimages/CoverArtConfig.png" width="250" alt="Cover Art Config">
+
+| Name                        | Type     | Default           | Supported options     | Description                                                                                         |
+|-----------------------------|----------|-------------------|-----------------------|-----------------------------------------------------------------------------------------------------|
+| `background_cover_art`      | Object   | none              | See Example           | Dynamically updates cards background with chosen cover art                                          |
+| `entity`                    | String   | none              | Any Entity ID         | Dynamically updates cards background with chosen cover art                                          |
+| `state_attribute_name`      | Object   | `entity_picture`  | See Example           | Dynamically updates cards background with multiple ways to configure image url)                     |
+| `internal_url_path`         | Object   | none              | See Example           | internal_url_path: /local/images/orange_img.png                                                     |
+| `external_full_url`         | Object   | none              | See Example           | external_full_url: https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png             |
+| `background_css_config`     | Object   | none              | See Example           | Styling for the background image                                                                    |
+| `position`                  | String   | `center`          | See CSS Documentation | `background-position` CSS property                                                                  |
+| `size`                      | String   | `cover`           | See CSS Documentation | `background-size` CSS property                                                                      |
+| `repeat`                    | String   | `no-repeat`       | See CSS Documentation | `background-repeat` CSS property                                                                    |
+| `lighten_darken`            | String   | `no-repeat`       | See CSS Documentation | Lighten or darken the background image to make buttons easier to see                                |
+
+Media Player:
+```yaml
+type: custom:swipe-navigation-card
 background_cover_art:
-  entity_id: sensor.genius_lyrics_foobar_lyrics
-  state_attribute_name: media_image
+  entity: media_player.spotify
   style:
-    position: center
     size: 50%
+    position: center
     repeat: no-repeat
+    lighten_darken: 0
 ```
 
-Internal Url Path Configuration with CSS:
-
-![Card Example](/exampleimages/CoverArtExample3.png)
+Custom State Attribute:
 ```yaml
+type: custom:swipe-navigation-card
+background_cover_art:
+  entity: sensor.genius_lyrics_foobar_lyrics
+  state_attribute_name: media_image
+```
+
+Internal Url Path:
+```yaml
+type: custom:swipe-navigation-card
 background_cover_art:
   internal_url_path: /local/images/my_image.jpg
-  style:
-    position: center
-    size: 70%
-    repeat: no-repeat
 ```
 
-External Full Url Configuration with CSS:
-
-![Card Example](/exampleimages/CoverArtExample4.png)
+External Full Url:
 ```yaml
+type: custom:swipe-navigation-card
 background_cover_art:
-  external_full_url: https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png
-  style:
-    position: top
-    size: 50%
+  external_full_url: https://www.someurl.com/assets/img/custom_images/orange_img.png
 ```
-### Love the card?
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/tjstock)
