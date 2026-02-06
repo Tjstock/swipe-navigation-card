@@ -98,8 +98,8 @@ swipe_actions:
         data:
           device: Xbox
           command: DirectionLeft
-   two_finger:
-      swipe_up:
+  two_finger:
+    swipe_up:
       tap_action:
         action: perform-action
         perform_action: remote.send_command
