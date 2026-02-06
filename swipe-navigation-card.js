@@ -334,7 +334,28 @@ class NavigationCard extends HTMLElement {
         }
     }
     setConfig(config) {
-        NavigationCard.assertConfiguration(config);
+        /** Background Cover Art */
+        if (config.background_cover_art && Object.keys(config.background_cover_art).length != 0) {
+            if((config.background_cover_art.internal_url_path && config.background_cover_art.external_full_url) 
+                    || config.background_cover_art.entity && (config.background_cover_art.internal_url_path || config.background_cover_art.external_full_url)) {
+                throw new Error('You can only define one of the following configs for `background_cover_art`: `entity`, `internal_url_path` or `external_full_url`');
+            }
+            if(config.background_cover_art.entity && !config.background_cover_art?.entity.startsWith('media_player.')) {
+                if(!config.background_cover_art.state_attribute_name) {
+                    throw new Error('The `state_attribute_name` for `background_cover_art` must be defined if the entity is not of media player domain');
+                }
+            }
+        }
+
+        /** Repeat Delay */
+        if (config.button_actions) {
+            Object.values(config.button_actions).forEach(button => {
+                const hold_repeat_ms = button?.hold_repeat_ms;
+                if((hold_repeat_ms || hold_repeat_ms == 0) && (hold_repeat_ms < 100 || hold_repeat_ms > 2000)) {
+                    throw new Error("Hold Repeat Delay not in range of 100-2000 milliseconds.");
+                }
+            });
+        }
         this.config = config;
     }
 
@@ -478,33 +499,9 @@ class NavigationCard extends HTMLElement {
                 return undefined;
             },
             assertConfig: (config) => {
-                NavigationCard.assertConfiguration(config);
+                // Errors thrown here will disable the UI editor and open the raw config editor with the error message displayed
             },
         };
-    }
-    static assertConfiguration(config) {
-        /** Background Cover Art */
-        if (config.background_cover_art && Object.keys(config.background_cover_art).length != 0) {
-            if((config.background_cover_art.internal_url_path && config.background_cover_art.external_full_url) 
-                    || config.background_cover_art.entity && (config.background_cover_art.internal_url_path || config.background_cover_art.external_full_url)) {
-                throw new Error('You can only define one of the following configs for `background_cover_art`: `entity`, `internal_url_path` or `external_full_url`');
-            }
-            if(config.background_cover_art.entity && !config.background_cover_art?.entity.startsWith('media_player.')) {
-                if(!config.background_cover_art.state_attribute_name) {
-                    throw new Error('The `state_attribute_name` for `background_cover_art` must be defined if the entity is not of media player domain');
-                }
-            }
-        }
-
-        /** Repeat Delay */
-        if (config.button_actions) {
-            Object.values(config.button_actions).forEach(button => {
-                const hold_repeat_ms = button?.hold_repeat_ms;
-                if((hold_repeat_ms || hold_repeat_ms == 0) && (hold_repeat_ms < 100 || hold_repeat_ms > 2000)) {
-                    throw new Error("Hold Repeat Delay not in range of 100-2000 milliseconds.");
-                }
-            });
-        }
     }
 }
 
