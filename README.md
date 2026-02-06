@@ -5,11 +5,17 @@
 <a href="https://buymeabitcoffee.vercel.app/btc/bc1q2arc23vwxccv3yjssymc87ar0cvjycwkahgw57?identifier=Buy+Me+a+BitCoffee&lightning=tstock%40speed.app"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Beer-f7931a?logo=bitcoin&logoColor=white&color=f7931a&style=flat" alt="Buy Me a BitCoffee badge" width="125"/></a>
 
 # Swipe Navigation Card
-A card that allows you to control your media devices and/or any other entity types by using swipe gestures and buttons.
+A card that allows you to control your media devices and/or any other entity types by using swipe gestures and buttons. This card supports any Home Assistant action/behaviour, including perform action, more-info, toggle, navigate, URL, and assist.
 
-![Card Example](/exampleimages/example-card.png)
+<img src="/exampleimages/example-card.png" width="250" alt="Card Example">
+
+#### ⭐Popup Tip
+Want to configure one of your buttons to open up a popup of apps to select? Look into using the pop-up feature of thomasloven's [hass-browser_mod](https://github.com/thomasloven/hass-browser_mod?tab=readme-ov-file#popup-card) and trigger it using the more-info behaviour for the chosen entity! Clooos's [Bubble-Card](https://github.com/Clooos/Bubble-Card?tab=readme-ov-file#pop-up) is also a good alternative.
+
+<img src="/exampleimages/AppSelector.png" width="250" alt="App Selector Example">
+
 ## Features
-##### _Dont see a feature you want added? Create an issue with an enhancement label, and I will do my best to implement it!_
+##### _➕ Don't see a feature you want added? Create an issue with an enhancement label, and I will do my best to implement it!_
 
 
 ### Swipe Gestures
@@ -72,7 +78,8 @@ For a more in depth guide on how to install custom plugins outside of HACS pleas
 ⭐Now has a fully functional graphical editor with section layout sizing support!⭐
 
 ### Swipe Gestures
-![Card Example](/exampleimages/SwipeGesturesConfig.png)
+<img src="/exampleimages/SwipeGesturesConfig.png" width="250" alt="Swipe Gestures Config">
+
 | Name                   | Type                | Default      | Supported options              | Description                                                                                         |
 |------------------------|---------------------|--------------|--------------------------------|-----------------------------------------------------------------------------------------------------|
 | `swip_actions`         | Object              | none         | See Example                    | Parent Object for all swipe actions                                                                 |
@@ -111,7 +118,8 @@ swipe_actions:
 ```
 
 ### Buttons
-![Card Example](/exampleimages/ButtonsConfig.png)
+<img src="/exampleimages/ButtonsConfig.png" width="250" alt="Buttons Config">
+
 | Name                        | Type                | Default      | Supported options              | Description                                                                                         |
 |-----------------------------|---------------------|--------------|--------------------------------|-----------------------------------------------------------------------------------------------------|
 | `default_icon_size`         | Number              | none         | Any Positive Number            | Default size of all the buttons. If not set, icons will autosize as card layout size changes        |
@@ -203,7 +211,8 @@ button_actions:
 ```
 
 ### Background Cover Art
-![Card Example](/exampleimages/CoverArtConfig.png)
+<img src="/exampleimages/CoverArtConfig.png" width="250" alt="Cover Art Config">
+
 | Name                        | Type     | Default           | Supported options     | Description                                                                                         |
 |-----------------------------|----------|-------------------|-----------------------|-----------------------------------------------------------------------------------------------------|
 | `background_cover_art`      | Object   | none              | See Example           | Dynamically updates cards background with chosen cover art                                          |
@@ -217,7 +226,7 @@ button_actions:
 | `repeat`                    | String   | `no-repeat`       | See CSS Documentation | `background-repeat` CSS property                                                                    |
 | `lighten_darken`            | String   | `no-repeat`       | See CSS Documentation | Lighten or darken the background image to make buttons easier to see                                |
 
-![Card Example](/exampleimages/CoverArtExample1.png)
+<img src="/exampleimages/CoverArtExample1.png" width="250" alt="Cover Art Example">
 
 Media Player:
 ```yaml
