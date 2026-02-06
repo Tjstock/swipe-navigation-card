@@ -7,7 +7,7 @@
 # Swipe Navigation Card
 A card that allows you to control your media devices and/or any other entity types by using swipe gestures and buttons. This card supports any Home Assistant action/behaviour, including perform action, more-info, toggle, navigate, URL, and assist.
 
-<img src="/exampleimages/example-card.png" width="250" alt="Card Example">
+<img src="/exampleimages/example-card.png" width="250" alt="Card Example"> <img src="/exampleimages/CoverArtExample1.png" width="250" alt="Cover Art Example">
 
 #### ⭐Popup Tip
 Want to configure one of your buttons to open up a popup of apps to select? Look into using the pop-up feature of thomasloven's [hass-browser_mod](https://github.com/thomasloven/hass-browser_mod?tab=readme-ov-file#popup-card) and trigger it using the more-info behaviour for the chosen entity! Clooos's [Bubble-Card](https://github.com/Clooos/Bubble-Card?tab=readme-ov-file#pop-up) is also a good alternative.
@@ -225,8 +225,6 @@ button_actions:
 | `size`                      | String   | `cover`           | See CSS Documentation | `background-size` CSS property                                                                      |
 | `repeat`                    | String   | `no-repeat`       | See CSS Documentation | `background-repeat` CSS property                                                                    |
 | `lighten_darken`            | String   | `no-repeat`       | See CSS Documentation | Lighten or darken the background image to make buttons easier to see                                |
-
-<img src="/exampleimages/CoverArtExample1.png" width="250" alt="Cover Art Example">
 
 Media Player:
 ```yaml
