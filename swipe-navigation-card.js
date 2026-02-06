@@ -363,6 +363,10 @@ class NavigationCard extends HTMLElement {
                                 { name: "tap_action", label: "Tap behavior", selector: { ui_action: {actions: ["perform-action", "toggle", "more-info", "navigate", "url", "assist", "none" ], default_action: "none"} } },
                                 { name: "tap_entity", label: "Toggle/More Info Target", selector: { entity: {} } }
                             ]};
+        const swipe_action = [
+                                { name: "tap_action", label: "Swipe behavior", selector: { ui_action: {actions: ["perform-action", "toggle", "more-info", "navigate", "url", "assist", "none" ], default_action: "none"} } },
+                                { name: "tap_entity", label: "Toggle/More Info Target", selector: { entity: {} } }
+                             ];
         const hold_action = { type: "expandable", name: "hold_action_expandable", label: "Hold Action", flatten: true, schema: [
                                 { name: "hold_repeat_ms", label: "Hold repeat delay",  selector: { number: { min: 100, max: 1000, step: 50, unit_of_measurement: "ms" } } },
                                 { name: "hold_action", label: "Hold behavior", selector: { ui_action: {actions: ["perform-action", "toggle", "more-info", "navigate", "url", "assist", "none"], default_action: "none"} } },
@@ -386,16 +390,16 @@ class NavigationCard extends HTMLElement {
             schema: [
                 { type: "expandable", name: "swipe_actions", label: "Swipe Gestures", schema: [
                     { type: "expandable", name: "one_finger", label: "One Finger", schema: [
-                        { type: "expandable", name: "swipe_left", label: "Swipe Left Action", schema: [tap_action] },
-                        { type: "expandable", name: "swipe_right", label: "Swipe Right Action",schema: [tap_action] },
-                        { type: "expandable", name: "swipe_up", label: "Swipe Up Action", schema: [tap_action] },
-                        { type: "expandable", name: "swipe_down", label: "Swipe Down Action", schema: [tap_action] },
+                        { type: "expandable", name: "swipe_left", label: "Swipe Left Action", schema: swipe_action },
+                        { type: "expandable", name: "swipe_right", label: "Swipe Right Action",schema: swipe_action },
+                        { type: "expandable", name: "swipe_up", label: "Swipe Up Action", schema: swipe_action },
+                        { type: "expandable", name: "swipe_down", label: "Swipe Down Action", schema: swipe_action },
                     ]},
                     { type: "expandable", name: "two_finger", label: "Two Finger", schema: [
-                        { type: "expandable", name: "swipe_left", label: "Swipe Left Action", schema: [tap_action] },
-                        { type: "expandable", name: "swipe_right", label: "Swipe Right Action", schema: [tap_action] },
-                        { type: "expandable", name: "swipe_up", label: "Swipe Up Action", schema: [tap_action] },
-                        { type: "expandable", name: "swipe_down", label: "Swipe Down Action", schema: [tap_action] },
+                        { type: "expandable", name: "swipe_left", label: "Swipe Left Action", schema: swipe_action },
+                        { type: "expandable", name: "swipe_right", label: "Swipe Right Action", schema: swipe_action },
+                        { type: "expandable", name: "swipe_up", label: "Swipe Up Action", schema: swipe_action },
+                        { type: "expandable", name: "swipe_down", label: "Swipe Down Action", schema: swipe_action },
                     ]},
                 ]},
                 { type: "expandable", name: "button_actions", label: "Buttons", schema: [
