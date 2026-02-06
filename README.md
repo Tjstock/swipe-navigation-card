@@ -5,7 +5,7 @@
 <a href="https://buymeabitcoffee.vercel.app/btc/bc1q2arc23vwxccv3yjssymc87ar0cvjycwkahgw57?identifier=Buy+Me+a+BitCoffee&lightning=tstock%40speed.app"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Beer-f7931a?logo=bitcoin&logoColor=white&color=f7931a&style=flat" alt="Buy Me a BitCoffee badge" width="125"/></a>
 
 # Swipe Navigation Card
-A card that allows you to control your media devices and/or any other entity types by using swipe gestures and buttons. This card supports any Home Assistant action/behaviour, including perform action, more-info, toggle, navigate, URL, and assist.
+A card that allows you to control your media devices and/or any other entity types by using swipe gestures and buttons. This card supports any `tap` and `hold` [Home Assistant action](https://www.home-assistant.io/dashboards/actions/).
 
 <img src="/exampleimages/example-card.png" width="250" alt="Card Example"> <img src="/exampleimages/CoverArtExample1.png" width="250" alt="Cover Art Example">
 
@@ -19,7 +19,7 @@ Want to configure one of your buttons to open up a popup of apps to select? Look
 
 
 ### Swipe Gestures
-One-finger and two-finger swipe gesture support that can call any Home Assistant action.
+One-finger and two-finger swipe gesture support that can call any `tap` and `hold` [Home Assistant action](https://www.home-assistant.io/dashboards/actions/).
 - Swiping anywhere on the center of the card will trigger a left, right, up, or down action based on the direction you swiped
    - Swiping from right to left calls the defined `Swipe Left Action`
    - Swiping from left to right calls the defined `Swipe Right Action`
@@ -27,10 +27,10 @@ One-finger and two-finger swipe gesture support that can call any Home Assistant
    - Swiping from bottom to top calls the defined `Swipe Up Action`
 
 ### Center Tap Action
-Tapping anywhere on the card that is not a button will call the defined `Touchpad Tap Action`; any Home Assistant action is supported.  At this time, this does not support any button design configurations or hold behavior actions.
+Tapping anywhere on the card that is not a button will call the defined `Touchpad Tap Action`; any `tap` [Home Assistant action](https://www.home-assistant.io/dashboards/actions/) is supported.  At this time, this does not support any button design configurations or hold behavior actions.
 
 ### Buttons
-16 configurable buttons that can call any Home Assistant action.
+16 configurable buttons that can call any `tap` and `hold` [Home Assistant action](https://www.home-assistant.io/dashboards/actions/).
 - Ability to add both a tap behavior and hold behavior action
 - Ability to repeat an action on button hold with custom `Hold repeat delay` between 100 and 2000 milliseconds
 - Buttons can be positioned anywhere on the card using the `Vertical adjustment` and `Horizontal adjustment` configs, but default to the outer edges
