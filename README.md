@@ -19,7 +19,7 @@ Want to configure one of your buttons to open up a popup of apps to select? Look
 
 
 ### Swipe Gestures
-One-finger and two-finger swipe gesture support that can call any `tap` and `hold` [Home Assistant action](https://www.home-assistant.io/dashboards/actions/).
+One-finger and two-finger swipe gesture support that can call any `tap` [Home Assistant action](https://www.home-assistant.io/dashboards/actions/).
 - Swiping anywhere on the center of the card will trigger a left, right, up, or down action based on the direction you swiped
    - Swiping from right to left calls the defined `Swipe Left Action`
    - Swiping from left to right calls the defined `Swipe Right Action`
